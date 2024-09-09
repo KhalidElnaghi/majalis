@@ -6,7 +6,7 @@
 /out-tsc
 /bazel-out
 environments
-!environments/environment.qc.ts
+!environments/environment.ts
 
 # Node
 /node_modules
