@@ -1,0 +1,44 @@
+{
+  "EXTERNAL": {
+    "BUTTON": {
+      "SEND_VOTING": "Send voting",
+      "CHECK": "Check",
+      "MOVE_TO_VOTE": "Move to voting"
+    },
+    "TITLE": {
+      "VOTING_ON_THE_POLLS_OF_THE_MEETINGVOTING_ON_THE_POLLS_OF_THE_MEETING": "Voting on the polls of the meeting"
+    },
+    "LABEL": {
+      "MEETING_NAME": "Meeting name",
+      "MEETING_TIME": "Meeting time",
+      "MEETING_LOCATION": "Meeting location",
+      "POLL": "Poll",
+      "OPTIONS": "Options",
+      "ATTACHMENTS": "Attachments",
+      "TOTAL": "Total",
+      "VOTE": "Vote",
+      "VOTED_SEND_SUCCESSFULLY": "Voted Send Successfully",
+      "OTHER": "Other",
+      "ATTENDANCE_CONFIRMED_SUCCESSFULLY": "Attendance confirmed Successfully",
+      "ATTENDANCE_CANCELED_SUCCESSFULLY": "Attendance canceled Successfully",
+      "WELCOME_TO_MEETING_VOTE": "Welcome to meeting vote for",
+      "INSERT_MOBILE_TO_VOTE": "For voting please enter a valid mobile number",
+      "OTP": "OTP",
+      "CHECK_OTP": "Check OTP",
+      "OTP_SENT_TO": "OTP was sent to",
+      "NO_CODE_RECIEVED": "Didn't recieve code?",
+      "RESEND_CODE": "Resend OTP"
+    },
+    "PARAG": {
+      "": ""
+    },
+    "MESSAGE": {
+      "VOTED_SUCCESS": "Voted success",
+      "VOTE_REPEATED": "Number has already voted on this meeting."
+    },
+    "ERROR": {
+      "OTP_LENGTH_4": "OTP can't be less that 4 characters",
+      "": ""
+    }
+  }
+}

@@ -1,0 +1,98 @@
+// NOTE: The below overrides are better UI than the default material component design.
+// TODO: will be more easier to customize material compoenent using M3 Design tokens in the upcoming v18
+
+@use "palette";
+
+:root {
+  --mdc-filled-text-field-container-color: transparent;
+  --mat-form-field-container-vertical-padding: 12px;
+  --mdc-outlined-text-field-label-text-size: 14px;
+  --mat-form-field-container-text-size: 14px;
+  --mat-form-field-container-height: 50px;
+
+  --mat-menu-item-label-text-size: 14px;
+  --mat-select-trigger-text-size: 14px;
+  --mat-option-label-text-size: 14px;
+
+  --mat-card-subtitle-text-weight: 600;
+  --mat-card-title-text-weight: 600;
+  --mat-card-title-text-size: 16px;
+
+  --mat-datepicker-calendar-container-touch-shape: 12px;
+  --mat-datepicker-calendar-container-shape: 12px;
+}
+
+// form field
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 12px;
+}
+
+.mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  padding-right: 8px !important;
+}
+
+// expantion panel
+.mat-content.mat-content-hide-toggle {
+  margin-right: 0px !important;
+}
+.mat-expansion-indicator {
+  margin: 0 12px;
+}
+
+// Menus and lists
+.mat-mdc-list-item {
+  height: 50px !important;
+  --mdc-list-list-item-hover-state-layer-color: #1492e6;
+  --mdc-list-list-item-focus-state-layer-color: #1492e6;
+  --mdc-list-list-item-hover-state-layer-opacity: 0.1;
+  --mdc-list-list-item-focus-state-layer-opacity: 0.2;
+}
+
+.mat-mdc-menu-item,
+.mat-mdc-option {
+  border-radius: 16px;
+  margin: 3px 5px;
+}
+
+div.mat-mdc-select-panel {
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-radius: 12px !important;
+  margin-top: 4px !important;
+  padding: 4px 0 !important;
+}
+
+.mat-mdc-menu-panel {
+  border-radius: 12px !important;
+  padding: 4px !important;
+}
+
+.mat-expansion-panel-spacing {
+  margin: 0 !important;
+}
+
+.mdc-text-field__input::-webkit-calendar-picker-indicator {
+  display: block !important;
+}
+
+.customResultBar {
+  --mdc-linear-progress-active-indicator-height: 6px;
+  --mdc-linear-progress-track-height: 6px;
+}
+
+.successProgressbar {
+  --mdc-linear-progress-active-indicator-color: #307456 !important;
+}
+
+.statusChip {
+  --mdc-chip-label-text-color: white !important;
+  --mdc-chip-container-height: unset !important;
+  --mdc-chip-label-text-line-height: unset !important;
+  --mdc-chip-label-text-size: 12px !important;
+  --mdc-chip-container-shape-radius: 20px !important;
+  padding: 5px;
+}

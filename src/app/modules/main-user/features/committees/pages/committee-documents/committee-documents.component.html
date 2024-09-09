@@ -1,0 +1,56 @@
+<div class="min-h-20 flex items-center justify-start gap-2">
+  @if(permissionsService.can(ACTION.upload, RESOURCE.committeeDocument,true)){
+  <button
+    [disabled]="layout.isLoading()"
+    (click)="fileInput.click()"
+    mat-raised-button
+    color="primary"
+    type="button"
+  >
+    {{ "MAIN.BUTTON.ADD_NEW_DOCUMENT" | translate }}
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <input
+    (change)="onFileSelected($event)"
+    accept="image/*,.pdf"
+    style="display: none"
+    type="file"
+    #fileInput
+    id="file"
+  />
+  }
+</div>
+
+<div
+  class="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3"
+>
+  @for(document of this.documents(); track document) {
+
+  <attachment-card
+    [fileData]="
+    {
+      id: document.id,
+      url:document.url,
+      title:document.title,
+      creationTime: document.creationTime,
+      isInternal: true,
+    }"
+    [permissions]="{
+      canDelete: permissionsService.can(
+        ACTION.delete,
+        RESOURCE.committeeDocument,
+        true
+      ),
+      canPreview: permissionsService.can(
+        ACTION.preview,
+        RESOURCE.committeeDocument,
+        true
+      ),
+    }"
+    (deletedDocument)="handleDeleteDocument($event)"
+  />
+  }@empty {
+  <empty-entity-line />
+  }
+</div>

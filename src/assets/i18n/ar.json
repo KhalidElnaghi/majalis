@@ -1,0 +1,78 @@
+{
+  "GLOBAL": {
+    "BUTTON": {
+      "YES": "نعم",
+      "NO": "لا",
+      "OK": "موافق",
+      "NEXT": "التالي",
+      "CANCEL": "الغاء",
+      "CONFIRM": "تأكيد",
+      "CREATE": "إنشاء",
+      "ADD": "إضافة",
+      "SAVE": "حفظ",
+      "PREVIOUS": "السابق",
+      "DELETE": "حذف",
+      "EDIT": "تعديل",
+      "MEETING_POLLS": "محاور الاجتماع",
+      "VIEW_MINUTE": "عرض المحضر",
+      "EXPORT_MINUTE": "تصدير المحضر",
+      "DOWNLOAD": "تحميل",
+      "VIEW": "عرض",
+      "CLOSE_MINUTE": "إغلاق المحضر",
+      "SEARCH": "بحث",
+      "SORT": "ترتيب",
+      "FILTERS": "عوامل التصفيه"
+    },
+    "TITLE": {
+      "": ""
+    },
+    "LABEL": {
+      "USER_PROFILE": "الحساب الشخصى",
+      "DOCUMENT_ADDED_ON": "تم إضافة الملف بتاريخ",
+      "SETTINGS": "الإعدادات",
+      "LOGOUT": "تسجيل الخروج"
+    },
+    "PARAG": {
+      "": ""
+    },
+    "MESSAGE": {
+      "NO_DATA_TO_DISPLAY": "لا يوجد بيانات لعرضها",
+      "DOWNLOADED_SUCCESSFULLY": "تم تحميل بنجاح",
+      "FILE_UPLOADED_SUCCESSFULLY": "تم رفع الملف بنجاح"
+    },
+    "ERROR": {
+      "NO_INTERNET_CONNECTION": "لا يوجد إتصال بالإنترنت!"
+    },
+    "PAGINATOR": {
+      "itemsPerPageLabel": "عدد العناصر في الصفحة :",
+      "nextPageLabel": "الصفحة التالية",
+      "previousPageLabel": "الصفحة السابقة",
+      "firstPageLabel": "الصفحة الأولى",
+      "lastPageLabel": "الصفحة الأخيرة",
+      "getRangeLabel": "{{start}} - {{end}} من {{total}}"
+    },
+    "DAYS": {
+      "SATURDAY": "السبت",
+      "SUNDAY": "الأحد",
+      "MONDAY": "الاثنين",
+      "TUESDAY": "الثلاثاء",
+      "WEDNESDAY": "الأربعاء",
+      "THURSDAY": "الخميس",
+      "FRIDAY": "الجمعة"
+    },
+    "MONTHS": {
+      "JANUARY": "يناير",
+      "FEBRUARY": "فبراير",
+      "MARCH": "مارس",
+      "APRIL": "ابريل",
+      "MAY": "مايو",
+      "JUNE": "يونيو",
+      "JULY": "يوليو",
+      "AUGUST": "اغسطس",
+      "SEPTEMBER": "سبتمبر",
+      "OCTOBER": "اكتوبر",
+      "NOVEMBER": "نوفمبر",
+      "DECEMBER": "ديسمبر"
+    }
+  }
+}

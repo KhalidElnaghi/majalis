@@ -1,0 +1,190 @@
+<form
+  [formGroup]="getFormGroup()"
+  class="flex flex-col gap-4 mt-4 border focus-within:!border-primary rounded-lg rounded-b-none p-5"
+>
+  <div
+    class="flex items-start justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm" for="name">
+      {{ "MAIN.LABEL.POLL_NAME" | translate }}
+    </label>
+    @if(active().value) {
+    <mat-form-field class="!flex-1 max-sm:w-full">
+      <input matInput formControlName="title" />
+      <!-- Required Error Message -->
+      @if(fieldControl('title')?.hasError('required')){
+      <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+      }
+      <!-- MaxLength Error Message -->
+      @if(fieldControl('title')?.hasError('maxlength')) {
+      <mat-error>{{ "MAIN.ERROR.MAX_LENGTH_50" | translate }}</mat-error>
+      }
+    </mat-form-field>
+    } @else {
+    {{ fieldControl("title").value }}
+    }
+  </div>
+  <div
+    class="flex items-start justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm">
+      {{ "MAIN.LABEL.OPTIONS" | translate }}
+    </label>
+    <div class="!flex-1 flex gap-2 items-center flex-wrap">
+      @if(active().value) {
+      <mat-form-field>
+        <input
+          matInput
+          formControlName="choiceName"
+          [placeholder]="'MAIN.LABEL.OPTION_NAME' | translate"
+        />
+        <!-- Required Error Message -->
+        @if(fieldControl('choiceName')?.hasError('required')){
+        <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+        }
+        <!-- MaxLength Error Message -->
+        @if(fieldControl('choiceName')?.hasError('maxlength')) {
+        <mat-error>{{ "MAIN.ERROR.MAX_LENGTH_50" | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-stroked-button color="primary" (click)="addChoice()">
+        {{ "MAIN.BUTTON.ADD_OPTION" | translate }}
+      </button>
+      <mat-divider
+        color="warn"
+        vertical="true"
+        style="height: 35px"
+        class="max-md:!h-[0]"
+      />
+      <mat-slide-toggle formControlName="otherChoice" labelPosition="after">
+        {{ "MAIN.LABEL.OTHER_OPTION" | translate }}
+      </mat-slide-toggle>
+      }
+      <div class="basis-full flex items-center gap-1">
+        <mat-chip-set formArrayName="choices">
+          @for (choice of fieldControl('choices').value; track $index) {
+          <mat-chip>
+            <div class="flex items-center justify-center gap-2">
+              @if(active().value) {
+              <mat-icon
+                (click)="removeChoice($index); $event.stopPropagation()"
+                class="cursor-pointer"
+                matTextPrefix
+              >
+                close
+              </mat-icon>
+              }
+              <span>
+                {{ choice.title }}
+              </span>
+              <mat-icon
+                disabled
+                color="primary"
+                fontSet="material-icons-outlined"
+              >
+                circle
+              </mat-icon>
+            </div>
+          </mat-chip>
+          } @empty {
+          <!-- appear only on inactive cards -->
+          @if(!active().value) {
+          {{ "GLOBAL.MESSAGE.NO_DATA_TO_DISPLAY" | translate }}
+          } }
+        </mat-chip-set>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex items-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label
+      class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+      for="locationInput"
+      >{{ "MAIN.LABEL.ATTACHMENTS" | translate }}</label
+    >
+    <input
+      (change)="onFileSelected($event)"
+      accept="image/*,.pdf"
+      style="display: none"
+      type="file"
+      #fileInput
+      id="file"
+      multiple
+    />
+    <div
+      class="basis-4/5 max-md:basis-[75%] flex flex-col flex-wrap gap-3 items-start justify-center"
+    >
+      @if(active().value) {
+      <button
+        (click)="fileInput.click()"
+        mat-stroked-button
+        color="primary"
+        type="button"
+      >
+        <mat-icon>add</mat-icon>
+        {{ "MAIN.BUTTON.ADD_ATTACHMENTS" | translate }}
+      </button>
+      }
+      <mat-chip-set formArrayName="choices">
+        @for(file of fieldControl('attachments').value; track $index) {
+        <mat-chip>
+          <div class="flex items-center justify-center gap-2">
+            @if(active().value) {
+            <mat-icon
+              (click)="removeFile($index); $event.stopPropagation()"
+              class="cursor-pointer"
+              matTextPrefix
+            >
+              close
+            </mat-icon>
+            }
+            <span>
+              {{ file.name }}
+            </span>
+            <mat-icon disabled color="warn">
+              {{
+                file?.type?.split("/")[1] == "pdf" ? "picture_as_pdf" : "image"
+              }}
+            </mat-icon>
+          </div>
+        </mat-chip>
+        } @empty {
+        <!-- appear only on inactive cards -->
+        @if(!active().value) {
+        {{ "GLOBAL.MESSAGE.NO_DATA_TO_DISPLAY" | translate }}
+        } }
+      </mat-chip-set>
+    </div>
+  </div>
+</form>
+<div class="border border-t-0 rounded-lg rounded-t-none mb-4">
+  @if (!active().value) {
+  <button
+    mat-icon-button
+    [matTooltip]="'GLOBAL.BUTTON.EDIT' | translate"
+    color="primary"
+    (click)="activateTopic()"
+  >
+    <mat-icon>border_color</mat-icon>
+  </button>
+  } @else {
+  <button
+    mat-icon-button
+    [matTooltip]="'GLOBAL.BUTTON.SAVE' | translate"
+    color="primary"
+    (click)="upsertTopic()"
+  >
+    <mat-icon>done</mat-icon>
+  </button>
+  }
+  <button
+    mat-icon-button
+    [matTooltip]="'GLOBAL.BUTTON.DELETE' | translate"
+    color="warn"
+    (click)="deleteTopic()"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

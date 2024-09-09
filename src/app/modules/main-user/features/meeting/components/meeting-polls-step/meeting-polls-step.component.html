@@ -1,0 +1,151 @@
+<form [formGroup]="form()" class="flex flex-col gap-4 my-4">
+  @if (meetingData.value.canEditTopics) {
+  <h3 class="font-bold">{{ "MAIN.TITLE.MEETING_POLLS" | translate }}</h3>
+  <div formArrayName="topics">
+    @for (poll of fieldControl('topics').controls; track $index) {
+    <meeting-poll [formGroupName]="$index" [form]="form()" [index]="$index" />
+    }
+    <button mat-flat-button color="primary" (click)="addTopic()">
+      {{ "MAIN.BUTTON.ADD_POLL" | translate }}
+    </button>
+  </div>
+  } @else {
+    <h3 class="font-bold">{{ "MAIN.TITLE.VIEW_MEETING_POLLS" | translate }}</h3>
+    <polls-voting [showVotingForAll]="true" [topics]="topics()" />
+  }
+
+  <mat-card
+    [ngClass]="{
+      '!pointer-events-none !bg-gray-100': isSettingsDisabled()
+    }"
+    (click)="showMessage()"
+  >
+    <mat-card-header>
+      <mat-card-title>
+        <h3 class="font-bold">
+          {{ "MAIN.TITLE.POLL_SETTINGS" | translate }}
+        </h3>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        class="flex justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start mt-4"
+      >
+        <label
+          class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+          for="votingStartType"
+        >
+          {{ "MAIN.LABEL.POLL_START" | translate }}
+        </label>
+        <div class="flex-1 w-full">
+          <mat-form-field appearance="fill" class="!w-full">
+            <mat-select formControlName="votingStartType">
+              <mat-option
+                value="MeetingCreation"
+                (click)="
+                  [
+                    resetControl('votingStartsAt'),
+                    resetControl('votingStartsAtTime')
+                  ]
+                "
+              >
+                <span>
+                  {{ "MAIN.LABEL.ACTIVATE_ON_MEETING_CREATION" | translate }}
+                </span>
+              </mat-option>
+              <mat-option value="Custom">
+                <span>{{ "MAIN.TITLE.CUSTOM" | translate }} </span>
+              </mat-option>
+            </mat-select>
+
+            @if(fieldControl('votingStartType')?.errors?.['required']){
+            <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+            }
+          </mat-form-field>
+
+          @if(fieldControl('votingStartType')?.value === 'Custom') {
+          <div class="flex gap-1 flex-col w-full lg:flex-row">
+            <div class="flex-grow w-full lg:w-3/4">
+              <custom-date-picker
+                controlName="votingStartsAt"
+                apprearance="fill"
+                timePeriod="future"
+              />
+            </div>
+
+            <mat-divider
+              color="warn"
+              vertical="true"
+              style="height: 35px"
+              class="!hidden lg:!block"
+            />
+
+            <mat-form-field
+              class="!w-full lg:!w-1/4"
+              [ngClass]="{
+                '!pointer-events-none !bg-gray-100':
+                  !fieldControl('votingStartsAt').value
+              }"
+            >
+              <input
+                matInput
+                type="time"
+                formControlName="votingStartsAtTime"
+                step="60"
+              />
+              <!-- time voteTimeIsRequired -->
+              @if(fieldControl('votingStartsAtTime')?.errors?.['voteTimeIsRequired'])
+              {
+              <mat-error>{{
+                "MAIN.ERROR.FIELD_REQUIRED" | translate
+              }}</mat-error>
+              }
+              <!-- time invalidVoteTime -->
+              @if(fieldControl('votingStartsAtTime')?.errors?.['invalidVoteTime'])
+              {
+              <mat-error>{{
+                "MAIN.ERROR.INVALID_VOTE_TIME" | translate
+              }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          }
+        </div>
+      </div>
+      <div
+        class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+      >
+        <label
+          class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+          for="votingEndType"
+        >
+          {{ "MAIN.LABEL.POLL_END" | translate }}
+        </label>
+        <mat-form-field appearance="fill" class="!flex-1 max-sm:w-full">
+          <mat-select formControlName="votingEndType">
+            @for(option of votingEndOptions; track option){
+            <mat-option [value]="option.value">
+              <span> {{ option.translation | translate }} </span>
+            </mat-option>
+            }
+          </mat-select>
+
+          @if(fieldControl('votingEndType')?.errors?.['required']){
+          <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <div
+        class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+      >
+        <label
+          class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+          for="showVotingForAll"
+        >
+          {{ "MAIN.LABEL.SHOW_TO_ALL" | translate }}
+        </label>
+        <mat-slide-toggle formControlName="showVotingForAll" />
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

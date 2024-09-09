@@ -1,0 +1,48 @@
+import { Component, Input, effect } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "../../pdf-notification-service";
+import * as i2 from "@angular/common";
+import * as i3 from "../pdf-shy-button/pdf-shy-button.component";
+import * as i4 from "../../responsive-visibility";
+export class PdfRotatePageCwComponent {
+    notificationService;
+    changeDetectorRef;
+    showRotateCwButton = true;
+    disableRotate = true;
+    clockwise = true;
+    counterClockwise = true;
+    PDFViewerApplication;
+    constructor(notificationService, changeDetectorRef) {
+        this.notificationService = notificationService;
+        this.changeDetectorRef = changeDetectorRef;
+        effect(() => {
+            this.PDFViewerApplication = notificationService.onPDFJSInitSignal();
+            if (this.PDFViewerApplication) {
+                this.onPdfJsInit();
+            }
+        });
+    }
+    rotateCW() {
+        this.PDFViewerApplication?.eventBus.dispatch('rotatecw');
+    }
+    onPdfJsInit() {
+        this.PDFViewerApplication?.eventBus.on('updateuistate', (event) => this.updateUIState(event));
+    }
+    updateUIState(event) {
+        this.disableRotate = event.pagesCount === 0;
+        this.changeDetectorRef.markForCheck();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfRotatePageCwComponent, deps: [{ token: i1.PDFNotificationService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.11", type: PdfRotatePageCwComponent, selector: "pdf-rotate-page-cw", inputs: { showRotateCwButton: "showRotateCwButton", clockwise: "clockwise", counterClockwise: "counterClockwise" }, ngImport: i0, template: "<pdf-shy-button\n  *ngIf=\"clockwise\"\n  [action]=\"rotateCW\"\n  primaryToolbarId=\"primaryPageRotateCw\"\n  class=\"rotateCw\"\n  [cssClass]=\"showRotateCwButton | responsiveCSSClass : 'hiddenXLView'\"\n  title=\"Rotate Clockwise\"\n  l10nId=\"pdfjs-page-rotate-cw-button\"\n  l10nLabel=\"pdfjs-page-rotate-cw-button-label\"\n  [disabled]=\"disableRotate\"\n  [order]=\"900\"\n  [closeOnClick]=\"false\"\n  image=\"<svg style='width: 23px; height: 23px' viewBox='0 0 24 24'><path fill='currentColor' d='M12 3C7.03 3 3 7.03 3 12S7.03 21 12 21C14 21 15.92 20.34 17.5 19.14L16.06 17.7C14.87 18.54 13.45 19 12 19C8.13 19 5 15.87 5 12S8.13 5 12 5 19 8.13 19 12H16L20 16L24 12H21C21 7.03 16.97 3 12 3'/></svg>\"\n>\n</pdf-shy-button>\n", styles: [":host:focus{outline:none}button:focus{outline:none}svg:focus{outline:none}button{padding:0;margin-top:0;margin-bottom:0}\n"], dependencies: [{ kind: "directive", type: i2.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: i3.PdfShyButtonComponent, selector: "pdf-shy-button", inputs: ["primaryToolbarId", "secondaryMenuId", "cssClass", "eventBusName", "l10nId", "l10nLabel", "title", "toggled", "disabled", "order", "action", "closeOnClick", "onlySecondaryMenu", "image"] }, { kind: "pipe", type: i4.ResponsiveCSSClassPipe, name: "responsiveCSSClass" }] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfRotatePageCwComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'pdf-rotate-page-cw', template: "<pdf-shy-button\n  *ngIf=\"clockwise\"\n  [action]=\"rotateCW\"\n  primaryToolbarId=\"primaryPageRotateCw\"\n  class=\"rotateCw\"\n  [cssClass]=\"showRotateCwButton | responsiveCSSClass : 'hiddenXLView'\"\n  title=\"Rotate Clockwise\"\n  l10nId=\"pdfjs-page-rotate-cw-button\"\n  l10nLabel=\"pdfjs-page-rotate-cw-button-label\"\n  [disabled]=\"disableRotate\"\n  [order]=\"900\"\n  [closeOnClick]=\"false\"\n  image=\"<svg style='width: 23px; height: 23px' viewBox='0 0 24 24'><path fill='currentColor' d='M12 3C7.03 3 3 7.03 3 12S7.03 21 12 21C14 21 15.92 20.34 17.5 19.14L16.06 17.7C14.87 18.54 13.45 19 12 19C8.13 19 5 15.87 5 12S8.13 5 12 5 19 8.13 19 12H16L20 16L24 12H21C21 7.03 16.97 3 12 3'/></svg>\"\n>\n</pdf-shy-button>\n", styles: [":host:focus{outline:none}button:focus{outline:none}svg:focus{outline:none}button{padding:0;margin-top:0;margin-bottom:0}\n"] }]
+        }], ctorParameters: () => [{ type: i1.PDFNotificationService }, { type: i0.ChangeDetectorRef }], propDecorators: { showRotateCwButton: [{
+                type: Input
+            }], clockwise: [{
+                type: Input
+            }], counterClockwise: [{
+                type: Input
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGRmLXJvdGF0ZS1wYWdlLWN3LmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC1leHRlbmRlZC1wZGYtdmlld2VyL3NyYy9saWIvdG9vbGJhci9wZGYtcm90YXRlLXBhZ2UtY3cvcGRmLXJvdGF0ZS1wYWdlLWN3LmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC1leHRlbmRlZC1wZGYtdmlld2VyL3NyYy9saWIvdG9vbGJhci9wZGYtcm90YXRlLXBhZ2UtY3cvcGRmLXJvdGF0ZS1wYWdlLWN3LmNvbXBvbmVudC5odG1sIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBcUIsU0FBUyxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7Ozs7OztBQVc1RSxNQUFNLE9BQU8sd0JBQXdCO0lBY2Y7SUFBcUQ7SUFabEUsa0JBQWtCLEdBQXlCLElBQUksQ0FBQztJQUVoRCxhQUFhLEdBQUcsSUFBSSxDQUFDO0lBR3JCLFNBQVMsR0FBRyxJQUFJLENBQUM7SUFHakIsZ0JBQWdCLEdBQUcsSUFBSSxDQUFDO0lBRXZCLG9CQUFvQixDQUFvQztJQUVoRSxZQUFvQixtQkFBMkMsRUFBVSxpQkFBb0M7UUFBekYsd0JBQW1CLEdBQW5CLG1CQUFtQixDQUF3QjtRQUFVLHNCQUFpQixHQUFqQixpQkFBaUIsQ0FBbUI7UUFDM0csTUFBTSxDQUFDLEdBQUcsRUFBRTtZQUNWLElBQUksQ0FBQyxvQkFBb0IsR0FBRyxtQkFBbUIsQ0FBQyxpQkFBaUIsRUFBRSxDQUFDO1lBQ3BFLElBQUksSUFBSSxDQUFDLG9CQUFvQixFQUFFO2dCQUM3QixJQUFJLENBQUMsV0FBVyxFQUFFLENBQUM7YUFDcEI7UUFDSCxDQUFDLENBQUMsQ0FBQztJQUNMLENBQUM7SUFFTSxRQUFRO1FBQ2IsSUFBSSxDQUFDLG9CQUFvQixFQUFFLFFBQVEsQ0FBQyxRQUFRLENBQUMsVUFBVSxDQUFDLENBQUM7SUFDM0QsQ0FBQztJQUVNLFdBQVc7UUFDaEIsSUFBSSxDQUFDLG9CQUFvQixFQUFFLFFBQVEsQ0FBQyxFQUFFLENBQUMsZUFBZSxFQUFFLENBQUMsS0FBSyxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsYUFBYSxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUM7SUFDaEcsQ0FBQztJQUVNLGFBQWEsQ0FBQyxLQUF5QjtRQUM1QyxJQUFJLENBQUMsYUFBYSxHQUFHLEtBQUssQ0FBQyxVQUFVLEtBQUssQ0FBQyxDQUFDO1FBQzVDLElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUN4QyxDQUFDO3dHQWxDVSx3QkFBd0I7NEZBQXhCLHdCQUF3Qiw4S0NYckMsOHRCQWVBOzs0RkRKYSx3QkFBd0I7a0JBTHBDLFNBQVM7K0JBQ0Usb0JBQW9COzJIQU12QixrQkFBa0I7c0JBRHhCLEtBQUs7Z0JBTUMsU0FBUztzQkFEZixLQUFLO2dCQUlDLGdCQUFnQjtzQkFEdEIsS0FBSyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENoYW5nZURldGVjdG9yUmVmLCBDb21wb25lbnQsIElucHV0LCBlZmZlY3QgfSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IFVwZGF0ZVVJU3RhdGVFdmVudCB9IGZyb20gJy4uLy4uL2V2ZW50cy91cGRhdGUtdWktc3RhdGUtZXZlbnQnO1xuaW1wb3J0IHsgSVBERlZpZXdlckFwcGxpY2F0aW9uIH0gZnJvbSAnLi4vLi4vb3B0aW9ucy9wZGYtdmlld2VyLWFwcGxpY2F0aW9uJztcbmltcG9ydCB7IFBERk5vdGlmaWNhdGlvblNlcnZpY2UgfSBmcm9tICcuLi8uLi9wZGYtbm90aWZpY2F0aW9uLXNlcnZpY2UnO1xuaW1wb3J0IHsgUmVzcG9uc2l2ZVZpc2liaWxpdHkgfSBmcm9tICcuLi8uLi9yZXNwb25zaXZlLXZpc2liaWxpdHknO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICdwZGYtcm90YXRlLXBhZ2UtY3cnLFxuICB0ZW1wbGF0ZVVybDogJy4vcGRmLXJvdGF0ZS1wYWdlLWN3LmNvbXBvbmVudC5odG1sJyxcbiAgc3R5bGVVcmxzOiBbJy4vcGRmLXJvdGF0ZS1wYWdlLWN3LmNvbXBvbmVudC5jc3MnXSxcbn0pXG5leHBvcnQgY2xhc3MgUGRmUm90YXRlUGFnZUN3Q29tcG9uZW50IHtcbiAgQElucHV0KClcbiAgcHVibGljIHNob3dSb3RhdGVDd0J1dHRvbjogUmVzcG9uc2l2ZVZpc2liaWxpdHkgPSB0cnVlO1xuXG4gIHB1YmxpYyBkaXNhYmxlUm90YXRlID0gdHJ1ZTtcblxuICBASW5wdXQoKVxuICBwdWJsaWMgY2xvY2t3aXNlID0gdHJ1ZTtcblxuICBASW5wdXQoKVxuICBwdWJsaWMgY291bnRlckNsb2Nrd2lzZSA9IHRydWU7XG5cbiAgcHJpdmF0ZSBQREZWaWV3ZXJBcHBsaWNhdGlvbjogSVBERlZpZXdlckFwcGxpY2F0aW9uIHwgdW5kZWZpbmVkO1xuXG4gIGNvbnN0cnVjdG9yKHByaXZhdGUgbm90aWZpY2F0aW9uU2VydmljZTogUERGTm90aWZpY2F0aW9uU2VydmljZSwgcHJpdmF0ZSBjaGFuZ2VEZXRlY3RvclJlZjogQ2hhbmdlRGV0ZWN0b3JSZWYpIHtcbiAgICBlZmZlY3QoKCkgPT4ge1xuICAgICAgdGhpcy5QREZWaWV3ZXJBcHBsaWNhdGlvbiA9IG5vdGlmaWNhdGlvblNlcnZpY2Uub25QREZKU0luaXRTaWduYWwoKTtcbiAgICAgIGlmICh0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uKSB7XG4gICAgICAgIHRoaXMub25QZGZKc0luaXQoKTtcbiAgICAgIH1cbiAgICB9KTtcbiAgfVxuXG4gIHB1YmxpYyByb3RhdGVDVygpOiB2b2lkIHtcbiAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uPy5ldmVudEJ1cy5kaXNwYXRjaCgncm90YXRlY3cnKTtcbiAgfVxuXG4gIHB1YmxpYyBvblBkZkpzSW5pdCgpOiB2b2lkIHtcbiAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uPy5ldmVudEJ1cy5vbigndXBkYXRldWlzdGF0ZScsIChldmVudCkgPT4gdGhpcy51cGRhdGVVSVN0YXRlKGV2ZW50KSk7XG4gIH1cblxuICBwdWJsaWMgdXBkYXRlVUlTdGF0ZShldmVudDogVXBkYXRlVUlTdGF0ZUV2ZW50KTogdm9pZCB7XG4gICAgdGhpcy5kaXNhYmxlUm90YXRlID0gZXZlbnQucGFnZXNDb3VudCA9PT0gMDtcbiAgICB0aGlzLmNoYW5nZURldGVjdG9yUmVmLm1hcmtGb3JDaGVjaygpO1xuICB9XG59XG4iLCI8cGRmLXNoeS1idXR0b25cbiAgKm5nSWY9XCJjbG9ja3dpc2VcIlxuICBbYWN0aW9uXT1cInJvdGF0ZUNXXCJcbiAgcHJpbWFyeVRvb2xiYXJJZD1cInByaW1hcnlQYWdlUm90YXRlQ3dcIlxuICBjbGFzcz1cInJvdGF0ZUN3XCJcbiAgW2Nzc0NsYXNzXT1cInNob3dSb3RhdGVDd0J1dHRvbiB8IHJlc3BvbnNpdmVDU1NDbGFzcyA6ICdoaWRkZW5YTFZpZXcnXCJcbiAgdGl0bGU9XCJSb3RhdGUgQ2xvY2t3aXNlXCJcbiAgbDEwbklkPVwicGRmanMtcGFnZS1yb3RhdGUtY3ctYnV0dG9uXCJcbiAgbDEwbkxhYmVsPVwicGRmanMtcGFnZS1yb3RhdGUtY3ctYnV0dG9uLWxhYmVsXCJcbiAgW2Rpc2FibGVkXT1cImRpc2FibGVSb3RhdGVcIlxuICBbb3JkZXJdPVwiOTAwXCJcbiAgW2Nsb3NlT25DbGlja109XCJmYWxzZVwiXG4gIGltYWdlPVwiPHN2ZyBzdHlsZT0nd2lkdGg6IDIzcHg7IGhlaWdodDogMjNweCcgdmlld0JveD0nMCAwIDI0IDI0Jz48cGF0aCBmaWxsPSdjdXJyZW50Q29sb3InIGQ9J00xMiAzQzcuMDMgMyAzIDcuMDMgMyAxMlM3LjAzIDIxIDEyIDIxQzE0IDIxIDE1LjkyIDIwLjM0IDE3LjUgMTkuMTRMMTYuMDYgMTcuN0MxNC44NyAxOC41NCAxMy40NSAxOSAxMiAxOUM4LjEzIDE5IDUgMTUuODcgNSAxMlM4LjEzIDUgMTIgNSAxOSA4LjEzIDE5IDEySDE2TDIwIDE2TDI0IDEySDIxQzIxIDcuMDMgMTYuOTcgMyAxMiAzJy8+PC9zdmc+XCJcbj5cbjwvcGRmLXNoeS1idXR0b24+XG4iXX0=

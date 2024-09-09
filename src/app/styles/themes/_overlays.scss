@@ -1,0 +1,102 @@
+@use "palette";
+@use "sass:map";
+
+// NOTE: This file is only for 'Global' styles for snackbars and dialogs. Wil be separated in future PR.
+
+// Section 1: Snackbar
+.mdc-dialog__surface,
+.mdc-snackbar__surface {
+  border-radius: 0.5rem !important;
+}
+
+.mdc-snackbar__surface {
+  background-color: map.get(palette.$primary-palette, 50) !important;
+}
+
+.mdc-snackbar__surface {
+  position: absolute;
+  top: 5rem;
+}
+
+// TODO: Once M3 theming is added, We move to use design tokens and move all custom styles to the snackbar component for better abstraction.
+.notification-success {
+  .mdc-snackbar__surface {
+    border-top: 3px solid map.get(palette.$primary-palette, 500) !important;
+  }
+  .mdc-snackbar__label {
+    color: map.get(palette.$primary-palette, 500) !important;
+  }
+}
+
+.notification-warn {
+  .mdc-snackbar__surface {
+    border-top: 3px solid palette.$warning !important;
+  }
+  .mdc-snackbar__label {
+    color: palette.$warning !important;
+  }
+}
+
+.notification-error {
+  .mdc-snackbar__surface {
+    border-top: 3px solid map.get(palette.$warn-palette, 500) !important;
+  }
+  .mdc-snackbar__label {
+    color: map.get(palette.$warn-palette, 500) !important;
+  }
+}
+
+.notification-info {
+  .mdc-snackbar__surface {
+    border-top: 3px solid palette.$info !important;
+  }
+  .mdc-snackbar__label {
+    color: palette.$info !important;
+  }
+}
+
+// Section 2: Dialogs
+.mdc-dialog__title {
+  @apply shadow-sm;
+  @apply rounded-t-lg;
+  --mat-dialog-headline-padding: 1.5rem 1rem;
+}
+
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mdc-dialog__content {
+  padding: 1rem !important;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 100vh !important;
+}
+
+.dialog-confirm,
+.dialog-form {
+  .mdc-dialog__title {
+    border-top: 3px solid solid map.get(palette.$primary-palette, 800);
+  }
+}
+.dialog-success {
+  .mdc-dialog__title {
+    border-top: 3px solid palette.$success;
+  }
+}
+.dialog-warn {
+  .mdc-dialog__title {
+    border-top: 3px solid palette.$warning;
+  }
+}
+.dialog-error {
+  .mdc-dialog__title {
+    border-top: 3px solid map.get(palette.$warn-palette, 500);
+  }
+}
+.dialog-info {
+  .mdc-dialog__title {
+    border-top: 3px solid palette.$info;
+  }
+}

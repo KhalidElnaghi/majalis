@@ -1,0 +1,45 @@
+@use "@angular/material" as mat;
+@use "sass:map";
+@use "palette";
+
+// TODO: Theming structure will be re-structured once V18-M3 Theming APIs are available, will be much easier & much less boilerplate
+
+$primary_colors: mat.define-palette(palette.$primary-palette);
+$accent_colors: mat.define-palette(palette.$secondary-palette);
+$warn_colors: mat.define-palette(palette.$warn-palette, 400);
+
+// $font-family: "Montserrat",
+$custom-font: mat.define-typography-config(
+  $font-family: "Cairo",
+);
+
+$light-theme-config: (
+  (
+    color: (
+      primary: $primary_colors,
+      accent: $accent_colors,
+      warn: $warn_colors,
+    ),
+    typography: $custom-font,
+  )
+);
+
+@function define-light-theme() {
+  $theme: mat.define-light-theme($light-theme-config);
+  $color: map.get($theme, color);
+  $color: map.merge(
+    $color,
+    (
+      background: palette.$light-theme-background-palette,
+      foreground: palette.$light-theme-foreground-palette,
+    )
+  );
+  @return map.merge(
+    $theme,
+    (
+      color: $color,
+    )
+  );
+}
+
+$light-theme: define-light-theme();

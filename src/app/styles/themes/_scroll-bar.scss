@@ -1,0 +1,21 @@
+@use "palette";
+@use "sass:map";
+
+::-webkit-scrollbar {
+  width: 0.35rem;
+  height: 0.35rem;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 0.2rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: map.get(palette.$primary-palette, 200);
+  border-radius: 0.2rem;
+
+  &:hover {
+    background: map.get(palette.$primary-palette, 400);
+  }
+}

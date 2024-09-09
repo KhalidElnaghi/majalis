@@ -1,0 +1,196 @@
+<button
+  (click)="backToMeetingsList()"
+  color="primary"
+  mat-button
+  class="flex items-center gap-1 font-bold"
+>
+  <mat-icon>
+    {{ layout.language() === "en" ? "chevron_left" : "chevron_right" }}
+  </mat-icon>
+
+  {{ "MAIN.LABEL.BACK_TO_MEETINGS_LIST" | translate }}
+</button>
+<h3 class="mb-8 mt-4 text-xl font-bold">
+  {{ "MAIN.TITLE.MEETING_PREVIEW" | translate }}
+</h3>
+<div class="grid grid-cols-1 gap-6">
+  <!-- Title -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">{{
+      "MAIN.LABEL.MEETING_NAME" | translate
+    }}</span>
+    <p class="font-bold">
+      {{ meetingDetails().title || "MAIN.LABEL.NONE" | translate }}
+    </p>
+  </div>
+
+  <!-- Time -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.TIME" | translate }}
+    </span>
+
+    <p class="font-bold flex items-center gap-2">
+      <span>{{ meetingDetails().date | customDatePipe : "hh:mm a" }}</span>
+
+      <mat-icon class="!text-xs !flex !items-center !justify-center">
+        {{ layout.language() === "en" ? "east" : "west" }}
+      </mat-icon>
+
+      <span>{{ meetingDetails().endAt | customDatePipe : "hh:mm a" }}</span>
+    </p>
+  </div>
+
+  <!-- Date -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.DATE" | translate }}
+    </span>
+
+    <p class="font-bold">
+      {{ meetingDetails().date | customDatePipe : "dd-MM-yyyy" }}
+    </p>
+  </div>
+
+  <!-- Repeat -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.REPEAT" | translate }}
+    </span>
+
+    <p class="font-bold">
+      @for(key of repetitionString(); track key){
+      {{ key | translate }}
+      }
+    </p>
+  </div>
+
+  <!-- Invitees -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.INVITEES" | translate }}
+    </span>
+
+    <div class="flex gap-2 flex-wrap">
+      @if(meetingDetails().invitees?.length){
+
+      <!-- LOOP OVER INVITEESS -->
+      @for (invitee of meetingDetails().invitees; track invitee) {
+      <mat-chip class="!bg-white !border !border-primary !rounded-full">
+        <span class="text-primary">{{ invitee.member.name }}</span>
+      </mat-chip>
+      }
+
+      <!-- Show "None" -->
+      } @else {
+      <p class="font-bold">
+        {{ "MAIN.LABEL.NONE" | translate }}
+      </p>
+      }
+    </div>
+  </div>
+
+  <!-- Location -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.LOCATION" | translate }}
+    </span>
+
+    @if(meetingDetails().location) {
+
+    <p class="font-bold" [innerHTML]="getSanitizedText()"></p>
+
+    }@else {
+
+    <p class="font-bold">
+      {{ "MAIN.LABEL.NONE" | translate }}
+    </p>
+    }
+  </div>
+
+  <!-- Notifications -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">{{
+      "MAIN.LABEL.ALERT_TYPE" | translate
+    }}</span>
+    <div>
+      @if (meetingDetails().emailNotification) {
+      <p class="font-bold mb-1">{{ "MAIN.LABEL.EMAIL" | translate }}</p>
+      }
+
+      <!--  -->
+      @if(meetingDetails().smsNotification) {
+      <p class="font-bold mb-1">{{ "MAIN.LABEL.SMS" | translate }}</p>
+      }
+
+      <!--  -->
+      @if (!meetingDetails().smsNotification &&
+      !meetingDetails().emailNotification) {
+      <p class="font-bold">{{ "MAIN.LABEL.NONE" | translate }}</p>
+      }
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.DESCRIPTION" | translate }}
+    </span>
+
+    <p class="font-bold">
+      {{ meetingDetails().description || "MAIN.LABEL.NONE" | translate }}
+    </p>
+  </div>
+
+  @if(meetingDetails().topics?.length){
+
+  <!-- Meeting-Polls -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.TITLE.MEETING_POLLS" | translate }}
+    </span>
+
+    <button
+      (click)="handleViewMeetingPollResult()"
+      mat-flat-button
+      class="!bg-primary !text-white"
+    >
+      {{ "MAIN.BUTTON.PREVIEW_MEETING_POLLS" | translate }}
+    </button>
+  </div>
+  }
+
+  <!-- Attachments -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.ATTACHMENTS" | translate }}
+    </span>
+
+    <div class="flex flex-wrap items-start gap-4">
+      @if(meetingDetails().meetingAttachments?.length){
+
+      <!-- Loop Over Attachments -->
+      @for(attachment of meetingDetails().meetingAttachments; track attachment){
+      <attachment-chip [fileData]="attachment" />
+      }
+
+      <!-- Show "None" -->
+      }@else {
+      <p class="font-bold">
+        {{ "MAIN.LABEL.NONE" | translate }}
+      </p>
+      }
+    </div>
+  </div>
+
+  <!-- Voting QR Code -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.VOTING_QR_CODE" | translate }}
+    </span>
+
+    <qrcode elementType="svg" [qrdata]="voteURL" [width]="200" />
+
+    <!-- <a [href]="voteURL" target="_blank">test</a> -->
+  </div>
+</div>

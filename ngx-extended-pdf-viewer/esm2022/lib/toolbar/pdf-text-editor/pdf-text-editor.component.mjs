@@ -1,0 +1,42 @@
+import { Component, Input, effect } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "../../pdf-notification-service";
+import * as i2 from "../pdf-shy-button/pdf-shy-button.component";
+import * as i3 from "../../responsive-visibility";
+export class PdfTextEditorComponent {
+    notificationService;
+    cdr;
+    show = true;
+    isSelected = false;
+    PDFViewerApplication;
+    constructor(notificationService, cdr) {
+        this.notificationService = notificationService;
+        this.cdr = cdr;
+        effect(() => {
+            this.PDFViewerApplication = notificationService.onPDFJSInitSignal();
+            if (this.PDFViewerApplication) {
+                this.onPdfJsInit();
+            }
+        });
+    }
+    onPdfJsInit() {
+        this.PDFViewerApplication?.eventBus.on('annotationeditormodechanged', ({ mode }) => {
+            setTimeout(() => {
+                this.isSelected = mode === 3;
+                this.cdr.detectChanges();
+            });
+        });
+    }
+    onClick() {
+        document.getElementById('editorFreeText')?.click();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfTextEditorComponent, deps: [{ token: i1.PDFNotificationService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.11", type: PdfTextEditorComponent, selector: "pdf-text-editor", inputs: { show: "show" }, ngImport: i0, template: "<pdf-shy-button\n  title=\"Draw\"\n  primaryToolbarId=\"primaryEditorFreeText\"\n  [cssClass]=\"show | responsiveCSSClass : 'hiddenTinyView'\"\n  l10nId=\"pdfjs-editor-free-text-button\"\n  l10nLabel=\"pdfjs-editor-free-text-button-label\"\n  [order]=\"4100\"\n  [action]=\"onClick\"\n  [toggled]=\"isSelected\"\n  [closeOnClick]=\"true\"\n  image=\"<svg width='20px' height='20px' viewBox='0 0 24 24'> <path fill='currentColor' d='M18.5,4L19.66,8.35L18.7,8.61C18.25,7.74 17.79,6.87 17.26,6.43C16.73,6 16.11,6 15.5,6H13V16.5C13,17 13,17.5 13.33,17.75C13.67,18 14.33,18 15,18V19H9V18C9.67,18 10.33,18 10.67,17.75C11,17.5 11,17 11,16.5V6H8.5C7.89,6 7.27,6 6.74,6.43C6.21,6.87 5.75,7.74 5.3,8.61L4.34,8.35L5.5,4H18.5Z' /> </svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0}\n"], dependencies: [{ kind: "component", type: i2.PdfShyButtonComponent, selector: "pdf-shy-button", inputs: ["primaryToolbarId", "secondaryMenuId", "cssClass", "eventBusName", "l10nId", "l10nLabel", "title", "toggled", "disabled", "order", "action", "closeOnClick", "onlySecondaryMenu", "image"] }, { kind: "pipe", type: i3.ResponsiveCSSClassPipe, name: "responsiveCSSClass" }] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfTextEditorComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'pdf-text-editor', template: "<pdf-shy-button\n  title=\"Draw\"\n  primaryToolbarId=\"primaryEditorFreeText\"\n  [cssClass]=\"show | responsiveCSSClass : 'hiddenTinyView'\"\n  l10nId=\"pdfjs-editor-free-text-button\"\n  l10nLabel=\"pdfjs-editor-free-text-button-label\"\n  [order]=\"4100\"\n  [action]=\"onClick\"\n  [toggled]=\"isSelected\"\n  [closeOnClick]=\"true\"\n  image=\"<svg width='20px' height='20px' viewBox='0 0 24 24'> <path fill='currentColor' d='M18.5,4L19.66,8.35L18.7,8.61C18.25,7.74 17.79,6.87 17.26,6.43C16.73,6 16.11,6 15.5,6H13V16.5C13,17 13,17.5 13.33,17.75C13.67,18 14.33,18 15,18V19H9V18C9.67,18 10.33,18 10.67,17.75C11,17.5 11,17 11,16.5V6H8.5C7.89,6 7.27,6 6.74,6.43C6.21,6.87 5.75,7.74 5.3,8.61L4.34,8.35L5.5,4H18.5Z' /> </svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0}\n"] }]
+        }], ctorParameters: () => [{ type: i1.PDFNotificationService }, { type: i0.ChangeDetectorRef }], propDecorators: { show: [{
+                type: Input
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGRmLXRleHQtZWRpdG9yLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC1leHRlbmRlZC1wZGYtdmlld2VyL3NyYy9saWIvdG9vbGJhci9wZGYtdGV4dC1lZGl0b3IvcGRmLXRleHQtZWRpdG9yLmNvbXBvbmVudC50cyIsIi4uLy4uLy4uLy4uLy4uLy4uL3Byb2plY3RzL25neC1leHRlbmRlZC1wZGYtdmlld2VyL3NyYy9saWIvdG9vbGJhci9wZGYtdGV4dC1lZGl0b3IvcGRmLXRleHQtZWRpdG9yLmNvbXBvbmVudC5odG1sIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBcUIsU0FBUyxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7Ozs7O0FBVzVFLE1BQU0sT0FBTyxzQkFBc0I7SUFPYjtJQUFxRDtJQUxsRSxJQUFJLEdBQXlCLElBQUksQ0FBQztJQUVsQyxVQUFVLEdBQUcsS0FBSyxDQUFDO0lBQ2xCLG9CQUFvQixDQUFvQztJQUVoRSxZQUFvQixtQkFBMkMsRUFBVSxHQUFzQjtRQUEzRSx3QkFBbUIsR0FBbkIsbUJBQW1CLENBQXdCO1FBQVUsUUFBRyxHQUFILEdBQUcsQ0FBbUI7UUFDN0YsTUFBTSxDQUFDLEdBQUcsRUFBRTtZQUNWLElBQUksQ0FBQyxvQkFBb0IsR0FBRyxtQkFBbUIsQ0FBQyxpQkFBaUIsRUFBRSxDQUFDO1lBQ3BFLElBQUksSUFBSSxDQUFDLG9CQUFvQixFQUFFO2dCQUM3QixJQUFJLENBQUMsV0FBVyxFQUFFLENBQUM7YUFDcEI7UUFDSCxDQUFDLENBQUMsQ0FBQztJQUNMLENBQUM7SUFFTyxXQUFXO1FBQ2pCLElBQUksQ0FBQyxvQkFBb0IsRUFBRSxRQUFRLENBQUMsRUFBRSxDQUFDLDZCQUE2QixFQUFFLENBQUMsRUFBRSxJQUFJLEVBQTBDLEVBQUUsRUFBRTtZQUN6SCxVQUFVLENBQUMsR0FBRyxFQUFFO2dCQUNkLElBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSxLQUFLLENBQUMsQ0FBQztnQkFDN0IsSUFBSSxDQUFDLEdBQUcsQ0FBQyxhQUFhLEVBQUUsQ0FBQztZQUMzQixDQUFDLENBQUMsQ0FBQztRQUNMLENBQUMsQ0FBQyxDQUFDO0lBQ0wsQ0FBQztJQUVNLE9BQU87UUFDWixRQUFRLENBQUMsY0FBYyxDQUFDLGdCQUFnQixDQUFDLEVBQUUsS0FBSyxFQUFFLENBQUM7SUFDckQsQ0FBQzt3R0EzQlUsc0JBQXNCOzRGQUF0QixzQkFBc0IsaUZDWG5DLGl2QkFhQTs7NEZERmEsc0JBQXNCO2tCQUxsQyxTQUFTOytCQUNFLGlCQUFpQjsySEFNcEIsSUFBSTtzQkFEVixLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ2hhbmdlRGV0ZWN0b3JSZWYsIENvbXBvbmVudCwgSW5wdXQsIGVmZmVjdCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgQW5ub3RhdGlvbkVkaXRvckVkaXRvck1vZGVDaGFuZ2VkRXZlbnQgfSBmcm9tICcuLi8uLi9ldmVudHMvYW5ub3RhdGlvbi1lZGl0b3ItbW9kZS1jaGFuZ2VkLWV2ZW50JztcbmltcG9ydCB7IElQREZWaWV3ZXJBcHBsaWNhdGlvbiB9IGZyb20gJy4uLy4uL29wdGlvbnMvcGRmLXZpZXdlci1hcHBsaWNhdGlvbic7XG5pbXBvcnQgeyBQREZOb3RpZmljYXRpb25TZXJ2aWNlIH0gZnJvbSAnLi4vLi4vcGRmLW5vdGlmaWNhdGlvbi1zZXJ2aWNlJztcbmltcG9ydCB7IFJlc3BvbnNpdmVWaXNpYmlsaXR5IH0gZnJvbSAnLi4vLi4vcmVzcG9uc2l2ZS12aXNpYmlsaXR5JztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAncGRmLXRleHQtZWRpdG9yJyxcbiAgdGVtcGxhdGVVcmw6ICcuL3BkZi10ZXh0LWVkaXRvci5jb21wb25lbnQuaHRtbCcsXG4gIHN0eWxlVXJsczogWycuL3BkZi10ZXh0LWVkaXRvci5jb21wb25lbnQuY3NzJ10sXG59KVxuZXhwb3J0IGNsYXNzIFBkZlRleHRFZGl0b3JDb21wb25lbnQge1xuICBASW5wdXQoKVxuICBwdWJsaWMgc2hvdzogUmVzcG9uc2l2ZVZpc2liaWxpdHkgPSB0cnVlO1xuXG4gIHB1YmxpYyBpc1NlbGVjdGVkID0gZmFsc2U7XG4gIHByaXZhdGUgUERGVmlld2VyQXBwbGljYXRpb246IElQREZWaWV3ZXJBcHBsaWNhdGlvbiB8IHVuZGVmaW5lZDtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIG5vdGlmaWNhdGlvblNlcnZpY2U6IFBERk5vdGlmaWNhdGlvblNlcnZpY2UsIHByaXZhdGUgY2RyOiBDaGFuZ2VEZXRlY3RvclJlZikge1xuICAgIGVmZmVjdCgoKSA9PiB7XG4gICAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uID0gbm90aWZpY2F0aW9uU2VydmljZS5vblBERkpTSW5pdFNpZ25hbCgpO1xuICAgICAgaWYgKHRoaXMuUERGVmlld2VyQXBwbGljYXRpb24pIHtcbiAgICAgICAgdGhpcy5vblBkZkpzSW5pdCgpO1xuICAgICAgfVxuICAgIH0pO1xuICB9XG5cbiAgcHJpdmF0ZSBvblBkZkpzSW5pdCgpIHtcbiAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uPy5ldmVudEJ1cy5vbignYW5ub3RhdGlvbmVkaXRvcm1vZGVjaGFuZ2VkJywgKHsgbW9kZSB9OiBBbm5vdGF0aW9uRWRpdG9yRWRpdG9yTW9kZUNoYW5nZWRFdmVudCkgPT4ge1xuICAgICAgc2V0VGltZW91dCgoKSA9PiB7XG4gICAgICAgIHRoaXMuaXNTZWxlY3RlZCA9IG1vZGUgPT09IDM7XG4gICAgICAgIHRoaXMuY2RyLmRldGVjdENoYW5nZXMoKTtcbiAgICAgIH0pO1xuICAgIH0pO1xuICB9XG5cbiAgcHVibGljIG9uQ2xpY2soKTogdm9pZCB7XG4gICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2VkaXRvckZyZWVUZXh0Jyk/LmNsaWNrKCk7XG4gIH1cbn1cbiIsIjxwZGYtc2h5LWJ1dHRvblxuICB0aXRsZT1cIkRyYXdcIlxuICBwcmltYXJ5VG9vbGJhcklkPVwicHJpbWFyeUVkaXRvckZyZWVUZXh0XCJcbiAgW2Nzc0NsYXNzXT1cInNob3cgfCByZXNwb25zaXZlQ1NTQ2xhc3MgOiAnaGlkZGVuVGlueVZpZXcnXCJcbiAgbDEwbklkPVwicGRmanMtZWRpdG9yLWZyZWUtdGV4dC1idXR0b25cIlxuICBsMTBuTGFiZWw9XCJwZGZqcy1lZGl0b3ItZnJlZS10ZXh0LWJ1dHRvbi1sYWJlbFwiXG4gIFtvcmRlcl09XCI0MTAwXCJcbiAgW2FjdGlvbl09XCJvbkNsaWNrXCJcbiAgW3RvZ2dsZWRdPVwiaXNTZWxlY3RlZFwiXG4gIFtjbG9zZU9uQ2xpY2tdPVwidHJ1ZVwiXG4gIGltYWdlPVwiPHN2ZyB3aWR0aD0nMjBweCcgaGVpZ2h0PScyMHB4JyB2aWV3Qm94PScwIDAgMjQgMjQnPiA8cGF0aCBmaWxsPSdjdXJyZW50Q29sb3InIGQ9J00xOC41LDRMMTkuNjYsOC4zNUwxOC43LDguNjFDMTguMjUsNy43NCAxNy43OSw2Ljg3IDE3LjI2LDYuNDNDMTYuNzMsNiAxNi4xMSw2IDE1LjUsNkgxM1YxNi41QzEzLDE3IDEzLDE3LjUgMTMuMzMsMTcuNzVDMTMuNjcsMTggMTQuMzMsMTggMTUsMThWMTlIOVYxOEM5LjY3LDE4IDEwLjMzLDE4IDEwLjY3LDE3Ljc1QzExLDE3LjUgMTEsMTcgMTEsMTYuNVY2SDguNUM3Ljg5LDYgNy4yNyw2IDYuNzQsNi40M0M2LjIxLDYuODcgNS43NSw3Ljc0IDUuMyw4LjYxTDQuMzQsOC4zNUw1LjUsNEgxOC41WicgLz4gPC9zdmc+XCJcbj5cbjwvcGRmLXNoeS1idXR0b24+XG4iXX0=

@@ -1,0 +1,300 @@
+<form [formGroup]="form()" class="flex flex-col gap-4 my-4">
+  <div
+    class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm" for="title">
+      {{ "MAIN.LABEL.MEETING_NAME" | translate }}
+    </label>
+
+    <mat-form-field class="!flex-1 max-sm:w-full">
+      <input
+        matInput
+        id="title"
+        formControlName="name"
+        type="text"
+        (blur)="inputOnBlur($event)"
+      />
+      <!-- Required Error Message -->
+      @if(fieldControl('name')?.errors?.['required']){
+      <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+      }
+      <!-- MaxLength Error Message -->
+      @if(fieldControl('name')?.errors?.['maxlength']) {
+      <mat-error>{{ "MAIN.ERROR.MAX_LENGTH_50" | translate }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="flex gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start">
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm">
+      {{ "MAIN.LABEL.MEETING_DATE_AND_TIME" | translate }}
+    </label>
+
+    <div class="flex-1 flex gap-1 w-full flex-col">
+      <div class="w-full">
+        <custom-date-picker
+          controlName="date"
+          apprearance="fill"
+          timePeriod="future"
+        />
+      </div>
+
+      <div class="w-full flex flex-col gap-x-4 gap-y-1 lg:flex-row">
+        <mat-form-field
+          class="max-sm:w-full !grow"
+          [ngClass]="{
+            '!pointer-events-none !bg-gray-100': isTimeDisabled()
+          }"
+        >
+          <mat-label class="text-sm">
+            {{ "MAIN.LABEL.START_TIME" | translate }}
+          </mat-label>
+          <input
+            matInput
+            type="time"
+            formControlName="startTime"
+            step="60"
+            tabindex="-1"
+            (click)="openTimePicker($event)"
+          />
+          <!-- startTime startTimeIsRequired -->
+          @if(fieldControl('startTime')?.errors?.['startTimeIsRequired']) {
+          <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+          }
+          <!-- startTime invalidStartTime -->
+          @if(fieldControl('startTime')?.errors?.['invalidStartTime']) {
+          <mat-error>{{
+            "MAIN.ERROR.INVALID_START_TIME" | translate
+          }}</mat-error>
+          }
+          <!-- startTime startTimeIsGreater -->
+          @if(fieldControl('startTime')?.errors?.['startTimeIsGreater']) {
+          <mat-error>{{
+            "MAIN.ERROR.START_TIME_IS_GREATER" | translate
+          }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field
+          class="max-sm:w-full !grow"
+          [ngClass]="{
+            '!pointer-events-none !bg-gray-100': isTimeDisabled()
+          }"
+        >
+          <mat-label class="text-sm">
+            {{ "MAIN.LABEL.END_TIME" | translate }}
+          </mat-label>
+          <input
+            matInput
+            type="time"
+            formControlName="endTime"
+            step="60"
+            tabindex="-1"
+            (click)="openTimePicker($event)"
+          />
+          <!-- endTime endTimeIsRequired -->
+          @if(fieldControl('endTime')?.errors?.['endTimeIsRequired']) {
+          <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+          }
+          <!-- endTime endTimeIsRequired -->
+          @if(fieldControl('endTime')?.errors?.['endTimeIsLess']) {
+          <mat-error>{{ "MAIN.ERROR.END_TIME_IS_LESS" | translate }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm">{{
+      "MAIN.LABEL.REPEAT" | translate
+    }}</label>
+    <mat-form-field
+      appearance="fill"
+      class="!flex-1 max-sm:w-full"
+      [ngClass]="{
+        '!pointer-events-none !bg-gray-100': isRepeatDisabled()
+      }"
+    >
+      <mat-select formControlName="repeat" tabIndex="-1">
+        @for(option of repeatOptions; track option){
+        <mat-option [value]="option.type">
+          <span> {{ option.key | translate }} </span>
+
+          @if(option.translation) {
+          <!-- Display selected date details  -->
+          @for(subTitle of option.translation; track subTitle) {
+          <span> {{ subTitle | translate }} </span>
+          } }
+        </mat-option>
+        }
+        <mat-option value="CUSTOM_VALUE" (click)="handleOpenDialog()">
+          <span>{{ "MAIN.TITLE.CUSTOM" | translate }} </span>
+        </mat-option>
+      </mat-select>
+
+      @if(fieldControl('repeat')?.errors?.['required']){
+      <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div
+    class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label
+      class="basis-1/5 max-md:basis-[25%] max-md:text-sm flex items-center gap-2"
+    >
+      <span>{{ "MAIN.LABEL.INVITEES" | translate }}</span>
+      <button
+        (click)="addInvitees(); $event.preventDefault()"
+        mat-icon-button
+        color="primary"
+      >
+        <mat-icon fontSet="material-icons-outlined">group_add</mat-icon>
+      </button>
+    </label>
+
+    <div
+      class="flex-1 flex flex-wrap gap-2 px-2 py-2 border-b border-slate-500 w-full"
+    >
+      @for (invitee of invitees; track invitee) {
+      <button
+        class="!border-primary !rounded-full"
+        mat-stroked-button
+        color="primary"
+        type="button"
+      >
+        {{ invitee.name }}
+
+        <mat-icon color="warn" (click)="removeInvitees(invitee)" class="!z-50">
+          close
+        </mat-icon>
+      </button>
+      }
+    </div>
+  </div>
+
+  <div
+    class="flex items-center justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm" for="locaiton">{{
+      "MAIN.LABEL.LOCATION" | translate
+    }}</label>
+    <mat-form-field class="!flex-1 max-sm:w-full">
+      <input
+        matInput
+        id="location"
+        formControlName="location"
+        type="text"
+        (blur)="inputOnBlur($event)"
+      />
+      <!-- Required Error Message -->
+      @if(fieldControl('location')?.errors?.['required']) {
+      <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div
+    class="flex justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label class="basis-1/5 max-md:basis-[25%] max-md:text-sm">
+      {{ "MAIN.LABEL.ALERT_TYPE" | translate }}
+    </label>
+
+    <div class="flex flex-col">
+      <mat-checkbox formControlName="emailAlert" color="primary">
+        {{ "MAIN.LABEL.EMAIL" | translate }}
+      </mat-checkbox>
+
+      <mat-checkbox formControlName="smsAlert" color="primary">
+        {{ "MAIN.LABEL.SMS" | translate }}
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <div
+    class="flex justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label
+      class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+      for="description"
+      >{{ "MAIN.LABEL.DESCRIPTION" | translate }}</label
+    >
+    <mat-form-field appearance="outline" class="!flex-1 max-sm:w-full">
+      <textarea
+        [placeholder]="'MAIN.LABEL.MEETING_DESCRIPTION' | translate"
+        formControlName="description"
+        id="description"
+        matInput
+        rows="10"
+        class="!resize-none"
+        (blur)="inputOnBlur($event)"
+      ></textarea>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="flex justify-start gap-10 max-sm:gap-2 max-sm:flex-col max-sm:items-start"
+  >
+    <label
+      class="basis-1/5 max-md:basis-[25%] max-md:text-sm"
+      for="locationInput"
+      >{{ "MAIN.LABEL.ATTACHMENTS" | translate }}</label
+    >
+    <div class="flex items-center flex-1 gap-4">
+      <input
+        (change)="onFileSelected($event)"
+        accept="image/*,.pdf"
+        style="display: none"
+        type="file"
+        #fileInput
+        id="file"
+      />
+
+      <div class="flex flex-col gap-3 items-start justify-center">
+        <button
+          (click)="fileInput.click()"
+          mat-stroked-button
+          color="primary"
+          type="button"
+          [disabled]="singleFileUploadIndicator().status === 'progress'"
+        >
+          <mat-icon>add</mat-icon>
+          {{ "MAIN.BUTTON.ADD_ATTACHMENTS" | translate }}
+        </button>
+
+        <div class="flex items-center gap-4 flex-wrap">
+          @if(selectedFiles){
+
+          <!-- Selected files preview -->
+          <mat-chip-set>
+            @for(file of selectedFiles; track file) {
+            <attachment-chip [fileData]="file">
+              <mat-icon
+                #deleteButton
+                (click)="removeFile(file); $event.stopPropagation()"
+                class="cursor-pointer"
+                matTextPrefix
+              >
+                close
+              </mat-icon>
+            </attachment-chip>
+            }
+            <!-- Upload Skeleton -->
+            @if(singleFileUploadIndicator().status === "progress"){
+            <uploading-chip-skeleton
+              [fileData]="singleFileUploadIndicator()"
+              (cancelUpload)="cancelUploadProgress()"
+            />
+            }
+          </mat-chip-set>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

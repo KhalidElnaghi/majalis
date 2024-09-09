@@ -1,0 +1,44 @@
+{
+  "EXTERNAL": {
+    "BUTTON": {
+      "SEND_VOTING": "إرسال التصويت",
+      "CHECK": "تحقق",
+      "MOVE_TO_VOTE": "الانتقال للتصويت"
+    },
+    "TITLE": {
+      "VOTING_ON_THE_POLLS_OF_THE_MEETING": "التصويت على محاور الإجتماع"
+    },
+    "LABEL": {
+      "MEETING_NAME": "إسم الإجتماع",
+      "MEETING_TIME": "وقت الإجتماع",
+      "MEETING_LOCATION": "مكان الإجتماع",
+      "POLL": "المحور",
+      "OPTIONS": "الخيارات",
+      "ATTACHMENTS": "المرفقات",
+      "TOTAL": "المجموع",
+      "VOTE": "صوت",
+      "VOTED_SEND_SUCCESSFULLY": "تم إرسال تصويتك بنجاح",
+      "OTHER": "أخري",
+      "ATTENDANCE_CONFIRMED_SUCCESSFULLY": "تم تأكيد الحضور بنجاح",
+      "ATTENDANCE_CANCELED_SUCCESSFULLY": "تم إلغاء الحضور بنجاح",
+      "WELCOME_TO_MEETING_VOTE": "اهلا بك في محاور اجتماع",
+      "INSERT_MOBILE_TO_VOTE": "للدخول للتصويت برجاء ادخال رقم الهاتف",
+      "OTP": "كود التحقق",
+      "CHECK_OTP": "التحقق من الكود",
+      "OTP_SENT_TO": "لقد أرسلنا رمز التحقق إلى",
+      "NO_CODE_RECIEVED": "لم تتلق الرمز؟",
+      "RESEND_CODE": "إعادة إرسال الرمز"
+    },
+    "PARAG": {
+      "": ""
+    },
+    "MESSAGE": {
+      "VOTED_SUCCESS": "تم التصويت بنجاح",
+      "VOTE_REPEATED": "هذا الرقم تم التصويت على الاجتماع من قبل"
+    },
+    "ERROR": {
+      "OTP_LENGTH_4": "كود التحقق لا يقل عن 4 احرف او ارقام",
+      "": ""
+    }
+  }
+}

@@ -1,0 +1,170 @@
+@if(loading()) {
+<mat-progress-bar mode="indeterminate" />
+}
+
+<div
+  class="!text-primary flex items-center justify-start mx-4 py-4"
+  mat-dialog-title
+>
+  <h1 class="text-xl">{{ dialogData.titles.main | translate }}</h1>
+</div>
+
+<mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab [label]="dialogData.titles.internalTab | translate">
+      <div mat-tab-content class="!flex flex-wrap">
+        <data-table
+          class="w-full"
+          [data]="internalItems"
+          [columns]="internalColumns"
+          [withSelection]="true"
+          [preSelected]="{
+            key: 'id',
+            collection: preSelected(),
+          }"
+          (selectionEvent)="setInternalSelection($event)"
+          (searchEvent)="searchInternalStream$.next($event)"
+          matSort
+        >
+          <div table-header-actions>
+            <departments-menu
+              (selectedDepartment)="setSelectedDepartment($event)"
+            />
+          </div>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "MAIN.TITLE.NAME" | translate }}
+            </th>
+
+            <td
+              mat-cell
+              *matCellDef="let row"
+              [ngClass]="{
+                '!text-primary': highlighted() && highlighted().includes(row.id)
+              }"
+            >
+              {{ layout.language() === lang.EN ? row.name : row.nameAr }}
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "MAIN.TITLE.DEPARTMENT" | translate }}
+            </th>
+
+            <td mat-cell *matCellDef="let row">
+              {{
+                layout.language() === lang.EN
+                  ? row.department
+                  : row.departmentAr
+              }}
+            </td>
+          </ng-container> -->
+
+          <mat-paginator
+            class="m-2 shadow-sm rounded-b-md transition-all"
+            (page)="onInternalPaginationChange($event)"
+            [pageSizeOptions]="[10, 20, 25]"
+            showFirstLastButtons
+            table-paginator
+            #internal
+          />
+        </data-table>
+      </div>
+    </mat-tab>
+
+    <mat-tab [label]="dialogData.titles.externalTab | translate">
+      <div mat-tab-content class="!flex flex-wrap">
+        @if(permissionsService.can(ACTION.create, RESOURCE.committeeMember,
+        false)){
+        <button
+          (click)="openAddExternalForm()"
+          mat-raised-button
+          color="primary"
+          class="mt-2"
+        >
+          {{ dialogData.titles.addButton | translate }}
+          <mat-icon>add</mat-icon>
+        </button>
+        }
+
+        <data-table
+          class="w-full"
+          [data]="externalItems"
+          [columns]="externalColumns"
+          [withSelection]="true"
+          [preSelected]="{
+            key: 'id',
+            collection: preSelected(),
+          }"
+          (selectionEvent)="setExternalSelection($event)"
+          (searchEvent)="searchExternalStream$.next($event)"
+          matSort
+        >
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "MAIN.TITLE.NAME" | translate }}
+            </th>
+
+            <td
+              mat-cell
+              *matCellDef="let row"
+              [ngClass]="{
+                '!text-primary': highlighted() && highlighted().includes(row.id)
+              }"
+            >
+              {{ row.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+
+            <td mat-cell *matCellDef="let row">
+              @if(permissionsService.can(ACTION.delete,
+              RESOURCE.committeeMember, false)){
+              <button
+                [matTooltip]="'GLOBAL.BUTTON.DELETE' | translate"
+                matTooltipPosition="above"
+                mat-icon-button
+                (click)="deleteMember(row.id)"
+              >
+                <mat-icon color="warn">delete_forever</mat-icon>
+              </button>
+              }
+            </td>
+          </ng-container>
+
+          <mat-paginator
+            class="m-2 shadow-sm rounded-b-md transition-all"
+            (page)="onExternalPaginationChange($event)"
+            [pageSizeOptions]="[10, 20, 25]"
+            showFirstLastButtons
+            table-paginator
+            #external
+          />
+        </data-table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    (click)="exportMembers()"
+    mat-raised-button
+    color="primary"
+    class="!mx-2"
+    [disabled]="
+      currentInternalSelected().length === 0 &&
+      currentExternalSelected().length === 0
+    "
+  >
+    {{ "GLOBAL.BUTTON.ADD" | translate }}
+  </button>
+
+  <button mat-stroked-button class="!mx-2" mat-dialog-close>
+    {{ "GLOBAL.BUTTON.CANCEL" | translate }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,322 @@
+<page-header [titles]="pageTitle">
+  <custom-breadcrumb breadcrumb [pagesRoutes]="breadcrumbData" />
+</page-header>
+<form [formGroup]="minuteForm" class="grid grid-cols-1 gap-6">
+  <!-- Title -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.MEETING_NAME" | translate }}
+    </span>
+    <p class="font-bold w-full">
+      {{ meetingMinute().title || ("MAIN.LABEL.NONE" | translate) }}
+    </p>
+  </div>
+
+  <!-- Date -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.MEETING_DATE_AND_TIME" | translate }}
+    </span>
+    <p class="font-bold w-full">
+      {{ meetingMinute().date | customDatePipe : "dd-MM-yyyy" }}
+      <span class="mx-2">-</span>
+      {{ meetingMinute().date | customDatePipe : "hh:mm a" }}
+    </p>
+  </div>
+
+  <!-- Minute -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400 flex gap-4 items-center">
+      {{ "MAIN.LABEL.THE_MINUTE" | translate }}
+      @if(viewMode()){
+      <mat-icon
+        class="cursor-pointer"
+        color="primary"
+        [fontIcon]="copyStatus() ? 'check' : 'content_copy'"
+        (click)="copyMinuteText()"
+        [matTooltip]="'MAIN.BUTTON.COPY' | translate"
+      />
+      }
+    </span>
+
+    <div class="w-full">
+      <textarea
+        matInput
+        formControlName="recordText"
+        class="w-full border border-[#DFDCDC] rounded-lg resize-none min-h-96 p-4"
+        [readOnly]="viewMode()"
+        [tabIndex]="viewMode() ? -1 : 0"
+        [ngClass]="{
+          'pointer-events-none': viewMode()
+        }"
+        #textArea
+        (input)="handleTextareaChange($event)"
+      ></textarea>
+      @if(fieldControl('recordText')?.errors?.['required']){
+      <mat-error class="!text-sm">
+        {{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}
+      </mat-error>
+      }
+    </div>
+  </div>
+
+  <!-- Attendees -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.LABEL.ATTENDEES" | translate }}
+    </span>
+    <div class="flex flex-col gap-4 w-full">
+      @if(!viewMode()){
+      <mat-radio-group
+        aria-label="Select an option"
+        class="flex gap-4"
+        formControlName="attendeesType"
+      >
+        <mat-radio-button value="file">
+          {{ "MAIN.LABEL.ATTENDEES_FILE" | translate }}
+        </mat-radio-button>
+        <mat-radio-button value="table">
+          {{ "MAIN.LABEL.ATTENDEES_TABLE" | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+      }
+
+      <div class="flex flex-col gap-4 w-full">
+        @if(fieldControl('attendeesType')?.value === "file") {
+        <div class="flex flex-col gap-3 items-start justify-center">
+          @if(!viewMode()){
+          <input
+            (change)="onSelectingAttendeesFile($event)"
+            accept="image/*,.pdf"
+            style="display: none"
+            type="file"
+            #attendeesInput
+            id="file"
+          />
+          <button
+            (click)="attendeesInput.click()"
+            mat-stroked-button
+            color="primary"
+            type="button"
+            [disabled]="attendeesFileUploadIndicator().status === 'progress'"
+          >
+            <mat-icon fontIcon="upload" />
+            {{ "MAIN.BUTTON.UPLOAD_ATTENDEES_FILE" | translate }}
+          </button>
+          }
+
+          <div class="flex items-center gap-4 flex-wrap">
+            @if(attendeesFile()){
+            <!-- Selected files preview -->
+            <attachment-chip [fileData]="attendeesFile()!">
+              @if(!viewMode()){
+              <mat-icon
+                #deleteButton
+                (click)="removeAttendeesFile(); $event.stopPropagation()"
+                class="cursor-pointer"
+                matTextPrefix
+              >
+                close
+              </mat-icon>
+              }
+            </attachment-chip>
+            }
+            <!-- Upload Skeleton -->
+            @if(attendeesFileUploadIndicator().status === "progress"){
+            <uploading-chip-skeleton
+              [fileData]="attendeesFileUploadIndicator()"
+              (cancelUpload)="cancelUploadAttendeesFileProgress()"
+            />
+            }
+          </div>
+        </div>
+        }
+        <data-table
+          [ngClass]="{
+            hidden:
+              fieldControl('attendeesType')?.value !== 'table' || viewMode()
+          }"
+          (selectionEvent)="setSelection($event)"
+          [withSelection]="true"
+          [withSearch]="false"
+          [columns]="editModeColumns"
+          [data]="items"
+          [preSelected]="{
+            key: 'inviteeId',
+            collection: preAttendingMembers()
+          }"
+          matSort
+        >
+          <mat-paginator
+            class="m-2 shadow-sm rounded-b-md transition-all"
+            [pageSizeOptions]="[10, 20, 25]"
+            showFirstLastButtons
+            table-paginator
+            #editModeAttendeesPaginator
+          />
+        </data-table>
+        <data-table
+          [ngClass]="{
+            hidden: viewMode() === false
+          }"
+          [withSelection]="false"
+          [withSearch]="false"
+          [columns]="viewModeColumns"
+          [data]="items"
+          matSort
+        >
+          <ng-container matColumnDef="markingAttendance">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "MAIN.TITLE.MARKING_ATTENDANCE" | translate }}
+            </th>
+
+            <td mat-cell *matCellDef="let row">
+              <mat-icon
+                [ngClass]="{
+                  'text-green-500': row.isAttended,
+                  'text-red-500': !row.isAttended
+                }"
+                class="!text-2xl !font-bold"
+                [fontIcon]="row.isAttended ? 'check' : 'close'"
+              />
+            </td>
+          </ng-container>
+
+          <mat-paginator
+            class="m-2 shadow-sm rounded-b-md transition-all"
+            [pageSizeOptions]="[10, 20, 25]"
+            showFirstLastButtons
+            table-paginator
+            #viewModeAttendeesPaginator
+          />
+        </data-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meeting Polls -->
+  @if(hasTopics()){
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">
+      {{ "MAIN.TITLE.MEETING_POLLS" | translate }}
+    </span>
+    <div class="w-full">
+      <button
+        mat-flat-button
+        class="!bg-primary !text-white"
+        (click)="viewMeetingPolls()"
+      >
+        {{ "MAIN.BUTTON.PREVIEW_MEETING_POLLS" | translate }}
+      </button>
+    </div>
+  </div>
+  }
+
+  <!-- Attachments -->
+  <div class="flex flex-col items-start gap-2 md:flex-row">
+    <span class="basis-1/5 text-gray-400">{{
+      "MAIN.LABEL.ATTACHMENTS" | translate
+    }}</span>
+
+    <div class="flex flex-col gap-3 items-start w-full">
+      @if(!viewMode()){
+      <input
+        (change)="onAttachmentSelected($event)"
+        accept="image/*,.pdf"
+        style="display: none"
+        type="file"
+        #attachmentsInput
+        id="file"
+      />
+      <button
+        [disabled]="attachmentsUploadIndicator().status === 'progress'"
+        (click)="attachmentsInput.click()"
+        mat-stroked-button
+        color="primary"
+        type="button"
+      >
+        <mat-icon>add</mat-icon>
+        {{ "MAIN.BUTTON.ADD_ATTACHMENTS" | translate }}
+      </button>
+      }
+
+      <div class="flex items-center gap-4 flex-wrap">
+        @if(selectedAttachments.length){
+
+        <mat-chip-set>
+          <!-- Selected Files -->
+          @for(file of selectedAttachments; track file) {
+          <attachment-chip [fileData]="file">
+            @if(!viewMode()){
+            <mat-icon
+              #deleteButton
+              (click)="removeAttachment(file); $event.stopPropagation()"
+              class="cursor-pointer"
+              matTextPrefix
+            >
+              close
+            </mat-icon>
+            }
+          </attachment-chip>
+          }
+        </mat-chip-set>
+        }
+        <!-- Chips placeholder -->
+        @if(attachmentsUploadIndicator().status === "progress"){
+        <uploading-chip-skeleton
+          [fileData]="attachmentsUploadIndicator()"
+          (cancelUpload)="cancelUploadAttachmentProgress()"
+        />
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  @if(!viewMode()) {
+  <div class="flex flex-col flex-wrap gap-4 sm:flex-row">
+    <button
+      mat-flat-button
+      class="!bg-primary !text-white"
+      (click)="closeMinute()"
+      [disabled]="layout.isLoading()"
+    >
+      {{ "MAIN.BUTTON.CLOSE_THE_MINUTE" | translate }}
+    </button>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      type="button"
+      (click)="saveAsDraft()"
+      [disabled]="layout.isLoading()"
+    >
+      {{ "MAIN.BUTTON.SAVE_AS_DRAFT" | translate }}
+    </button>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      type="button"
+      (click)="cancelMinute()"
+    >
+      {{ "GLOBAL.BUTTON.CANCEL" | translate }}
+    </button>
+  </div>
+  }
+</form>
+
+<meeting-moments-pdf
+  [data]="{
+    title: meetingMinuteData.title,
+    date: meetingMinuteData.date,
+    creationTime: meetingMinuteData.creationTime,
+    committeeName: meetingMinuteData.committeeName,
+    committeeChairman: meetingMinuteData.committeeChairman,
+    invitees: meetingMinuteData.invitees,
+    attendedInvitees: attendedInvitees(),
+    topics: meetingMinuteData.topics,
+    votes: votes(),
+    recordText: recordTextSignal()
+  }"
+/>

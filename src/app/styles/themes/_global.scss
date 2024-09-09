@@ -1,0 +1,32 @@
+// Toggle font family on DIR change.
+mat-dialog-content,
+mat-card-title,
+mat-label,
+html,
+body,
+button,
+label,
+span,
+div,
+h1,
+h2,
+h3,
+h4,
+th,
+td,
+.mat-mdc-dialog-title {
+  font-family: "Cairo", sans-serif !important;
+
+  // [dir="rtl"] & {
+  //   font-family: "Montserrat-Arabic" !important;
+  // }
+  // [dir="ltr"] & {
+  //   font-family: "Montserrat" !important;
+  // }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

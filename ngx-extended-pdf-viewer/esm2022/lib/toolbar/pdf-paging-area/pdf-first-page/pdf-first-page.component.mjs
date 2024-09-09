@@ -1,0 +1,41 @@
+import { Component, Input, effect } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "./../../../pdf-notification-service";
+import * as i2 from "../../pdf-shy-button/pdf-shy-button.component";
+import * as i3 from "../../../responsive-visibility";
+export class PdfFirstPageComponent {
+    notificationService;
+    changeDetectorRef;
+    show = true;
+    disableFirstPage = true;
+    PDFViewerApplication;
+    constructor(notificationService, changeDetectorRef) {
+        this.notificationService = notificationService;
+        this.changeDetectorRef = changeDetectorRef;
+        effect(() => {
+            this.PDFViewerApplication = notificationService.onPDFJSInitSignal();
+            if (this.PDFViewerApplication) {
+                this.onPdfJsInit();
+            }
+        });
+    }
+    firstPage() {
+        this.PDFViewerApplication?.eventBus.dispatch('firstpage');
+    }
+    onPdfJsInit() {
+        this.PDFViewerApplication?.eventBus.on('updateuistate', (event) => this.updateUIState(event));
+    }
+    updateUIState(event) {
+        this.disableFirstPage = event.pageNumber <= 1;
+        this.changeDetectorRef.markForCheck();
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfFirstPageComponent, deps: [{ token: i1.PDFNotificationService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.11", type: PdfFirstPageComponent, selector: "pdf-first-page", inputs: { show: "show" }, ngImport: i0, template: "<pdf-shy-button\n  [cssClass]=\"show | responsiveCSSClass : 'hiddenLargeView'\"\n  title=\"First page\"\n  primaryToolbarId=\"primaryFirstPage\"\n  l10nId=\"pdfjs-first-page-button\"\n  (click)=\"firstPage()\"\n  [disabled]=\"disableFirstPage\"\n  l10nLabel=\"pdfjs-first-page-button-label\"\n  [order]=\"500\"\n  eventBusName=\"firstpage\"\n  [closeOnClick]=\"false\"\n  image=\"<svg width='24px' height='24px' viewBox='0 0 24 24'><path fill='currentColor' d='M18.41,16.59L13.82,12L18.41,7.41L17,6L11,12L17,18L18.41,16.59M6,6H8V18H6V6Z' /></svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0;margin-top:0;margin-bottom:0}\n"], dependencies: [{ kind: "component", type: i2.PdfShyButtonComponent, selector: "pdf-shy-button", inputs: ["primaryToolbarId", "secondaryMenuId", "cssClass", "eventBusName", "l10nId", "l10nLabel", "title", "toggled", "disabled", "order", "action", "closeOnClick", "onlySecondaryMenu", "image"] }, { kind: "pipe", type: i3.ResponsiveCSSClassPipe, name: "responsiveCSSClass" }] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfFirstPageComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'pdf-first-page', template: "<pdf-shy-button\n  [cssClass]=\"show | responsiveCSSClass : 'hiddenLargeView'\"\n  title=\"First page\"\n  primaryToolbarId=\"primaryFirstPage\"\n  l10nId=\"pdfjs-first-page-button\"\n  (click)=\"firstPage()\"\n  [disabled]=\"disableFirstPage\"\n  l10nLabel=\"pdfjs-first-page-button-label\"\n  [order]=\"500\"\n  eventBusName=\"firstpage\"\n  [closeOnClick]=\"false\"\n  image=\"<svg width='24px' height='24px' viewBox='0 0 24 24'><path fill='currentColor' d='M18.41,16.59L13.82,12L18.41,7.41L17,6L11,12L17,18L18.41,16.59M6,6H8V18H6V6Z' /></svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0;margin-top:0;margin-bottom:0}\n"] }]
+        }], ctorParameters: () => [{ type: i1.PDFNotificationService }, { type: i0.ChangeDetectorRef }], propDecorators: { show: [{
+                type: Input
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGRmLWZpcnN0LXBhZ2UuY29tcG9uZW50LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvbmd4LWV4dGVuZGVkLXBkZi12aWV3ZXIvc3JjL2xpYi90b29sYmFyL3BkZi1wYWdpbmctYXJlYS9wZGYtZmlyc3QtcGFnZS9wZGYtZmlyc3QtcGFnZS5jb21wb25lbnQudHMiLCIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9uZ3gtZXh0ZW5kZWQtcGRmLXZpZXdlci9zcmMvbGliL3Rvb2xiYXIvcGRmLXBhZ2luZy1hcmVhL3BkZi1maXJzdC1wYWdlL3BkZi1maXJzdC1wYWdlLmNvbXBvbmVudC5odG1sIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBcUIsU0FBUyxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7Ozs7O0FBVzVFLE1BQU0sT0FBTyxxQkFBcUI7SUFRWjtJQUFxRDtJQU5sRSxJQUFJLEdBQXlCLElBQUksQ0FBQztJQUVsQyxnQkFBZ0IsR0FBRyxJQUFJLENBQUM7SUFFdkIsb0JBQW9CLENBQW9DO0lBRWhFLFlBQW9CLG1CQUEyQyxFQUFVLGlCQUFvQztRQUF6Rix3QkFBbUIsR0FBbkIsbUJBQW1CLENBQXdCO1FBQVUsc0JBQWlCLEdBQWpCLGlCQUFpQixDQUFtQjtRQUMzRyxNQUFNLENBQUMsR0FBRyxFQUFFO1lBQ1YsSUFBSSxDQUFDLG9CQUFvQixHQUFHLG1CQUFtQixDQUFDLGlCQUFpQixFQUFFLENBQUM7WUFDcEUsSUFBSSxJQUFJLENBQUMsb0JBQW9CLEVBQUU7Z0JBQzdCLElBQUksQ0FBQyxXQUFXLEVBQUUsQ0FBQzthQUNwQjtRQUNILENBQUMsQ0FBQyxDQUFDO0lBQ0wsQ0FBQztJQUVNLFNBQVM7UUFDZCxJQUFJLENBQUMsb0JBQW9CLEVBQUUsUUFBUSxDQUFDLFFBQVEsQ0FBQyxXQUFXLENBQUMsQ0FBQztJQUM1RCxDQUFDO0lBRU0sV0FBVztRQUNoQixJQUFJLENBQUMsb0JBQW9CLEVBQUUsUUFBUSxDQUFDLEVBQUUsQ0FBQyxlQUFlLEVBQUUsQ0FBQyxLQUFLLEVBQUUsRUFBRSxDQUFDLElBQUksQ0FBQyxhQUFhLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztJQUNoRyxDQUFDO0lBRU0sYUFBYSxDQUFDLEtBQXlCO1FBQzVDLElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxLQUFLLENBQUMsVUFBVSxJQUFJLENBQUMsQ0FBQztRQUM5QyxJQUFJLENBQUMsaUJBQWlCLENBQUMsWUFBWSxFQUFFLENBQUM7SUFDeEMsQ0FBQzt3R0E1QlUscUJBQXFCOzRGQUFyQixxQkFBcUIsZ0ZDWGxDLDhqQkFjQTs7NEZESGEscUJBQXFCO2tCQUxqQyxTQUFTOytCQUNFLGdCQUFnQjsySEFNbkIsSUFBSTtzQkFEVixLQUFLIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ2hhbmdlRGV0ZWN0b3JSZWYsIENvbXBvbmVudCwgSW5wdXQsIGVmZmVjdCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgVXBkYXRlVUlTdGF0ZUV2ZW50IH0gZnJvbSAnLi4vLi4vLi4vZXZlbnRzL3VwZGF0ZS11aS1zdGF0ZS1ldmVudCc7XG5pbXBvcnQgeyBJUERGVmlld2VyQXBwbGljYXRpb24gfSBmcm9tICcuLi8uLi8uLi9vcHRpb25zL3BkZi12aWV3ZXItYXBwbGljYXRpb24nO1xuaW1wb3J0IHsgUmVzcG9uc2l2ZVZpc2liaWxpdHkgfSBmcm9tICcuLi8uLi8uLi9yZXNwb25zaXZlLXZpc2liaWxpdHknO1xuaW1wb3J0IHsgUERGTm90aWZpY2F0aW9uU2VydmljZSB9IGZyb20gJy4vLi4vLi4vLi4vcGRmLW5vdGlmaWNhdGlvbi1zZXJ2aWNlJztcblxuQENvbXBvbmVudCh7XG4gIHNlbGVjdG9yOiAncGRmLWZpcnN0LXBhZ2UnLFxuICB0ZW1wbGF0ZVVybDogJy4vcGRmLWZpcnN0LXBhZ2UuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9wZGYtZmlyc3QtcGFnZS5jb21wb25lbnQuY3NzJ10sXG59KVxuZXhwb3J0IGNsYXNzIFBkZkZpcnN0UGFnZUNvbXBvbmVudCB7XG4gIEBJbnB1dCgpXG4gIHB1YmxpYyBzaG93OiBSZXNwb25zaXZlVmlzaWJpbGl0eSA9IHRydWU7XG5cbiAgcHVibGljIGRpc2FibGVGaXJzdFBhZ2UgPSB0cnVlO1xuXG4gIHByaXZhdGUgUERGVmlld2VyQXBwbGljYXRpb246IElQREZWaWV3ZXJBcHBsaWNhdGlvbiB8IHVuZGVmaW5lZDtcblxuICBjb25zdHJ1Y3Rvcihwcml2YXRlIG5vdGlmaWNhdGlvblNlcnZpY2U6IFBERk5vdGlmaWNhdGlvblNlcnZpY2UsIHByaXZhdGUgY2hhbmdlRGV0ZWN0b3JSZWY6IENoYW5nZURldGVjdG9yUmVmKSB7XG4gICAgZWZmZWN0KCgpID0+IHtcbiAgICAgIHRoaXMuUERGVmlld2VyQXBwbGljYXRpb24gPSBub3RpZmljYXRpb25TZXJ2aWNlLm9uUERGSlNJbml0U2lnbmFsKCk7XG4gICAgICBpZiAodGhpcy5QREZWaWV3ZXJBcHBsaWNhdGlvbikge1xuICAgICAgICB0aGlzLm9uUGRmSnNJbml0KCk7XG4gICAgICB9XG4gICAgfSk7XG4gIH1cblxuICBwdWJsaWMgZmlyc3RQYWdlKCk6IHZvaWQge1xuICAgIHRoaXMuUERGVmlld2VyQXBwbGljYXRpb24/LmV2ZW50QnVzLmRpc3BhdGNoKCdmaXJzdHBhZ2UnKTtcbiAgfVxuXG4gIHB1YmxpYyBvblBkZkpzSW5pdCgpOiB2b2lkIHtcbiAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uPy5ldmVudEJ1cy5vbigndXBkYXRldWlzdGF0ZScsIChldmVudCkgPT4gdGhpcy51cGRhdGVVSVN0YXRlKGV2ZW50KSk7XG4gIH1cblxuICBwdWJsaWMgdXBkYXRlVUlTdGF0ZShldmVudDogVXBkYXRlVUlTdGF0ZUV2ZW50KTogdm9pZCB7XG4gICAgdGhpcy5kaXNhYmxlRmlyc3RQYWdlID0gZXZlbnQucGFnZU51bWJlciA8PSAxO1xuICAgIHRoaXMuY2hhbmdlRGV0ZWN0b3JSZWYubWFya0ZvckNoZWNrKCk7XG4gIH1cbn1cbiIsIjxwZGYtc2h5LWJ1dHRvblxuICBbY3NzQ2xhc3NdPVwic2hvdyB8IHJlc3BvbnNpdmVDU1NDbGFzcyA6ICdoaWRkZW5MYXJnZVZpZXcnXCJcbiAgdGl0bGU9XCJGaXJzdCBwYWdlXCJcbiAgcHJpbWFyeVRvb2xiYXJJZD1cInByaW1hcnlGaXJzdFBhZ2VcIlxuICBsMTBuSWQ9XCJwZGZqcy1maXJzdC1wYWdlLWJ1dHRvblwiXG4gIChjbGljayk9XCJmaXJzdFBhZ2UoKVwiXG4gIFtkaXNhYmxlZF09XCJkaXNhYmxlRmlyc3RQYWdlXCJcbiAgbDEwbkxhYmVsPVwicGRmanMtZmlyc3QtcGFnZS1idXR0b24tbGFiZWxcIlxuICBbb3JkZXJdPVwiNTAwXCJcbiAgZXZlbnRCdXNOYW1lPVwiZmlyc3RwYWdlXCJcbiAgW2Nsb3NlT25DbGlja109XCJmYWxzZVwiXG4gIGltYWdlPVwiPHN2ZyB3aWR0aD0nMjRweCcgaGVpZ2h0PScyNHB4JyB2aWV3Qm94PScwIDAgMjQgMjQnPjxwYXRoIGZpbGw9J2N1cnJlbnRDb2xvcicgZD0nTTE4LjQxLDE2LjU5TDEzLjgyLDEyTDE4LjQxLDcuNDFMMTcsNkwxMSwxMkwxNywxOEwxOC40MSwxNi41OU02LDZIOFYxOEg2VjZaJyAvPjwvc3ZnPlwiXG4+XG48L3BkZi1zaHktYnV0dG9uPlxuIl19

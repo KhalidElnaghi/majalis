@@ -1,0 +1,152 @@
+@use "sass:map";
+
+$primary: #1492e6;
+$primary_light: #eff8ff;
+$success: #307456;
+$warning: #e6ad0b;
+$info: #06a79a;
+
+$dark-primary-text: rgba(black, 0.87);
+$light-primary-text: white;
+
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+
+// NOTE: According to the XD design, there is only one primary color and there is no secondary color, so we use the same as secondary also.
+$primary-palette: (
+  50: #e3f2fc,
+  100: #b9def8,
+  200: #8ac9f3,
+  300: #5bb3ee,
+  400: #37a2ea,
+  500: #1492e6,
+  600: #128ae3,
+  700: #0e7fdf,
+  800: #0b75db,
+  900: #0663d5,
+  A100: #fdfeff,
+  A200: #cadfff,
+  A400: #97c1ff,
+  A700: #7eb1ff,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  ),
+);
+
+$secondary-palette: (
+  50: #e3f2fc,
+  100: #b9def8,
+  200: #8ac9f3,
+  300: #5bb3ee,
+  400: #37a2ea,
+  500: #1492e6,
+  600: #128ae3,
+  700: #0e7fdf,
+  800: #0b75db,
+  900: #0663d5,
+  A100: #fdfeff,
+  A200: #cadfff,
+  A400: #97c1ff,
+  A700: #7eb1ff,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $dark-primary-text,
+    700: $dark-primary-text,
+    800: $dark-primary-text,
+    900: $dark-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  ),
+);
+
+$warn-palette: (
+  50: #f9e7e7,
+  100: #efc4c4,
+  200: #e59c9d,
+  300: #db7476,
+  400: #d35758,
+  500: #cb393b,
+  600: #c63335,
+  700: #be2c2d,
+  800: #b82426,
+  900: #ac1719,
+  A100: #ffe0e0,
+  A200: #ffadad,
+  A400: #ff7a7a,
+  A700: #ff6061,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  ),
+);
+
+// NOTE: Below palettes for easier control over material components, Will be temporarily used until V18-M3 is Implemented.
+$light-theme-background-palette: (
+  status-bar: map.get($primary-palette, 200),
+  app-bar: white,
+  background: $primary_light,
+  hover: rgba(white, 0.04),
+  card: white,
+  dialog: white,
+  disabled-button: rgba(map.get($primary-palette, 500), 0.12),
+  raised-button: white,
+  focused-button: $dark-focused,
+  selected-button: map.get($primary-palette, 200),
+  selected-disabled-button: map.get($primary-palette, 200),
+  disabled-button-toggle: map.get($primary-palette, 300),
+  unselected-chip: map.get($primary-palette, 300),
+  disabled-list-option: map.get($primary-palette, 300),
+  tooltip: map.get($primary-palette, 300),
+);
+
+$light-theme-foreground-palette: (
+  base: $dark-primary-text,
+  divider: $dark-dividers,
+  dividers: $dark-dividers,
+  disabled: $dark-disabled-text,
+  disabled-button: rgba(map.get($primary-palette, 500), 0.26),
+  disabled-text: $dark-disabled-text,
+  elevation: map.get($primary-palette, 900),
+  hint-text: $dark-disabled-text,
+  secondary-text: $dark-secondary-text,
+  icon: rgba(map.get($primary-palette, 500), 0.54),
+  icons: rgba(map.get($primary-palette, 500), 0.54),
+  text: $dark-primary-text,
+  slider-min: rgba(map.get($primary-palette, 500), 0.87),
+  slider-off: rgba(map.get($primary-palette, 500), 0.26),
+  slider-off-active: rgba(map.get($primary-palette, 500), 0.38),
+);

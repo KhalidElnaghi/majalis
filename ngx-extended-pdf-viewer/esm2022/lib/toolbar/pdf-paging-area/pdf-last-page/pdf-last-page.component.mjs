@@ -1,0 +1,40 @@
+import { Component, effect } from '@angular/core';
+import * as i0 from "@angular/core";
+import * as i1 from "./../../../pdf-notification-service";
+import * as i2 from "../../pdf-shy-button/pdf-shy-button.component";
+export class PdfLastPageComponent {
+    notificationService;
+    changeDetectorRef;
+    disableLastPage = true;
+    PDFViewerApplication;
+    constructor(notificationService, changeDetectorRef) {
+        this.notificationService = notificationService;
+        this.changeDetectorRef = changeDetectorRef;
+        effect(() => {
+            this.PDFViewerApplication = notificationService.onPDFJSInitSignal();
+            if (this.PDFViewerApplication) {
+                this.onPdfJsInit();
+            }
+        });
+    }
+    firstPage() {
+        this.PDFViewerApplication?.eventBus.dispatch('firstpage');
+    }
+    onPdfJsInit() {
+        this.PDFViewerApplication?.eventBus.on('updateuistate', (event) => this.updateUIState(event));
+    }
+    updateUIState(event) {
+        this.disableLastPage = event.pageNumber === event.pagesCount;
+        this.changeDetectorRef.markForCheck();
+    }
+    lastPage() {
+        this.PDFViewerApplication?.eventBus.dispatch('lastpage');
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfLastPageComponent, deps: [{ token: i1.PDFNotificationService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "17.3.11", type: PdfLastPageComponent, selector: "pdf-last-page", ngImport: i0, template: "<pdf-shy-button\n  cssClass=\"hiddenLargeView\"\n  title=\"Last page\"\n  primaryToolbarId=\"primaryLastPage\"\n  l10nId=\"pdfjs-last-page-button\"\n  l10nLabel=\"pdfjs-last-page-button-label\"\n  (click)=\"lastPage()\"\n  [disabled]=\"disableLastPage\"\n  [order]=\"800\"\n  eventBusName=\"lastpage\"\n  [closeOnClick]=\"false\"\n  image=\"<svg width='24px' height='24px' viewBox='0 0 24 24'><path fill='currentColor' d='M5.59,7.41L10.18,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M16,6H18V18H16V6Z' /></svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0;margin-top:0;margin-bottom:0}\n"], dependencies: [{ kind: "component", type: i2.PdfShyButtonComponent, selector: "pdf-shy-button", inputs: ["primaryToolbarId", "secondaryMenuId", "cssClass", "eventBusName", "l10nId", "l10nLabel", "title", "toggled", "disabled", "order", "action", "closeOnClick", "onlySecondaryMenu", "image"] }] });
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.3.11", ngImport: i0, type: PdfLastPageComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'pdf-last-page', template: "<pdf-shy-button\n  cssClass=\"hiddenLargeView\"\n  title=\"Last page\"\n  primaryToolbarId=\"primaryLastPage\"\n  l10nId=\"pdfjs-last-page-button\"\n  l10nLabel=\"pdfjs-last-page-button-label\"\n  (click)=\"lastPage()\"\n  [disabled]=\"disableLastPage\"\n  [order]=\"800\"\n  eventBusName=\"lastpage\"\n  [closeOnClick]=\"false\"\n  image=\"<svg width='24px' height='24px' viewBox='0 0 24 24'><path fill='currentColor' d='M5.59,7.41L10.18,12L5.59,16.59L7,18L13,12L7,6L5.59,7.41M16,6H18V18H16V6Z' /></svg>\"\n>\n</pdf-shy-button>\n", styles: ["button{padding:0;margin-top:0;margin-bottom:0}\n"] }]
+        }], ctorParameters: () => [{ type: i1.PDFNotificationService }, { type: i0.ChangeDetectorRef }] });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicGRmLWxhc3QtcGFnZS5jb21wb25lbnQuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9uZ3gtZXh0ZW5kZWQtcGRmLXZpZXdlci9zcmMvbGliL3Rvb2xiYXIvcGRmLXBhZ2luZy1hcmVhL3BkZi1sYXN0LXBhZ2UvcGRmLWxhc3QtcGFnZS5jb21wb25lbnQudHMiLCIuLi8uLi8uLi8uLi8uLi8uLi8uLi9wcm9qZWN0cy9uZ3gtZXh0ZW5kZWQtcGRmLXZpZXdlci9zcmMvbGliL3Rvb2xiYXIvcGRmLXBhZ2luZy1hcmVhL3BkZi1sYXN0LXBhZ2UvcGRmLWxhc3QtcGFnZS5jb21wb25lbnQuaHRtbCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEVBQXFCLFNBQVMsRUFBRSxNQUFNLEVBQUUsTUFBTSxlQUFlLENBQUM7Ozs7QUFVckUsTUFBTSxPQUFPLG9CQUFvQjtJQUtYO0lBQXFEO0lBSmxFLGVBQWUsR0FBRyxJQUFJLENBQUM7SUFFdEIsb0JBQW9CLENBQW9DO0lBRWhFLFlBQW9CLG1CQUEyQyxFQUFVLGlCQUFvQztRQUF6Rix3QkFBbUIsR0FBbkIsbUJBQW1CLENBQXdCO1FBQVUsc0JBQWlCLEdBQWpCLGlCQUFpQixDQUFtQjtRQUMzRyxNQUFNLENBQUMsR0FBRyxFQUFFO1lBQ1YsSUFBSSxDQUFDLG9CQUFvQixHQUFHLG1CQUFtQixDQUFDLGlCQUFpQixFQUFFLENBQUM7WUFDcEUsSUFBSSxJQUFJLENBQUMsb0JBQW9CLEVBQUU7Z0JBQzdCLElBQUksQ0FBQyxXQUFXLEVBQUUsQ0FBQzthQUNwQjtRQUNILENBQUMsQ0FBQyxDQUFDO0lBQ0wsQ0FBQztJQUVNLFNBQVM7UUFDZCxJQUFJLENBQUMsb0JBQW9CLEVBQUUsUUFBUSxDQUFDLFFBQVEsQ0FBQyxXQUFXLENBQUMsQ0FBQztJQUM1RCxDQUFDO0lBRU0sV0FBVztRQUNoQixJQUFJLENBQUMsb0JBQW9CLEVBQUUsUUFBUSxDQUFDLEVBQUUsQ0FBQyxlQUFlLEVBQUUsQ0FBQyxLQUFLLEVBQUUsRUFBRSxDQUFDLElBQUksQ0FBQyxhQUFhLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztJQUNoRyxDQUFDO0lBRU0sYUFBYSxDQUFDLEtBQXlCO1FBQzVDLElBQUksQ0FBQyxlQUFlLEdBQUcsS0FBSyxDQUFDLFVBQVUsS0FBSyxLQUFLLENBQUMsVUFBVSxDQUFDO1FBQzdELElBQUksQ0FBQyxpQkFBaUIsQ0FBQyxZQUFZLEVBQUUsQ0FBQztJQUN4QyxDQUFDO0lBRU0sUUFBUTtRQUNiLElBQUksQ0FBQyxvQkFBb0IsRUFBRSxRQUFRLENBQUMsUUFBUSxDQUFDLFVBQVUsQ0FBQyxDQUFDO0lBQzNELENBQUM7d0dBN0JVLG9CQUFvQjs0RkFBcEIsb0JBQW9CLHFEQ1ZqQyxvaEJBY0E7OzRGREphLG9CQUFvQjtrQkFMaEMsU0FBUzsrQkFDRSxlQUFlIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgQ2hhbmdlRGV0ZWN0b3JSZWYsIENvbXBvbmVudCwgZWZmZWN0IH0gZnJvbSAnQGFuZ3VsYXIvY29yZSc7XG5pbXBvcnQgeyBVcGRhdGVVSVN0YXRlRXZlbnQgfSBmcm9tICcuLi8uLi8uLi9ldmVudHMvdXBkYXRlLXVpLXN0YXRlLWV2ZW50JztcbmltcG9ydCB7IElQREZWaWV3ZXJBcHBsaWNhdGlvbiB9IGZyb20gJy4uLy4uLy4uL29wdGlvbnMvcGRmLXZpZXdlci1hcHBsaWNhdGlvbic7XG5pbXBvcnQgeyBQREZOb3RpZmljYXRpb25TZXJ2aWNlIH0gZnJvbSAnLi8uLi8uLi8uLi9wZGYtbm90aWZpY2F0aW9uLXNlcnZpY2UnO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICdwZGYtbGFzdC1wYWdlJyxcbiAgdGVtcGxhdGVVcmw6ICcuL3BkZi1sYXN0LXBhZ2UuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybHM6IFsnLi9wZGYtbGFzdC1wYWdlLmNvbXBvbmVudC5jc3MnXSxcbn0pXG5leHBvcnQgY2xhc3MgUGRmTGFzdFBhZ2VDb21wb25lbnQge1xuICBwdWJsaWMgZGlzYWJsZUxhc3RQYWdlID0gdHJ1ZTtcblxuICBwcml2YXRlIFBERlZpZXdlckFwcGxpY2F0aW9uOiBJUERGVmlld2VyQXBwbGljYXRpb24gfCB1bmRlZmluZWQ7XG5cbiAgY29uc3RydWN0b3IocHJpdmF0ZSBub3RpZmljYXRpb25TZXJ2aWNlOiBQREZOb3RpZmljYXRpb25TZXJ2aWNlLCBwcml2YXRlIGNoYW5nZURldGVjdG9yUmVmOiBDaGFuZ2VEZXRlY3RvclJlZikge1xuICAgIGVmZmVjdCgoKSA9PiB7XG4gICAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uID0gbm90aWZpY2F0aW9uU2VydmljZS5vblBERkpTSW5pdFNpZ25hbCgpO1xuICAgICAgaWYgKHRoaXMuUERGVmlld2VyQXBwbGljYXRpb24pIHtcbiAgICAgICAgdGhpcy5vblBkZkpzSW5pdCgpO1xuICAgICAgfVxuICAgIH0pO1xuICB9XG5cbiAgcHVibGljIGZpcnN0UGFnZSgpOiB2b2lkIHtcbiAgICB0aGlzLlBERlZpZXdlckFwcGxpY2F0aW9uPy5ldmVudEJ1cy5kaXNwYXRjaCgnZmlyc3RwYWdlJyk7XG4gIH1cblxuICBwdWJsaWMgb25QZGZKc0luaXQoKTogdm9pZCB7XG4gICAgdGhpcy5QREZWaWV3ZXJBcHBsaWNhdGlvbj8uZXZlbnRCdXMub24oJ3VwZGF0ZXVpc3RhdGUnLCAoZXZlbnQpID0+IHRoaXMudXBkYXRlVUlTdGF0ZShldmVudCkpO1xuICB9XG5cbiAgcHVibGljIHVwZGF0ZVVJU3RhdGUoZXZlbnQ6IFVwZGF0ZVVJU3RhdGVFdmVudCk6IHZvaWQge1xuICAgIHRoaXMuZGlzYWJsZUxhc3RQYWdlID0gZXZlbnQucGFnZU51bWJlciA9PT0gZXZlbnQucGFnZXNDb3VudDtcbiAgICB0aGlzLmNoYW5nZURldGVjdG9yUmVmLm1hcmtGb3JDaGVjaygpO1xuICB9XG5cbiAgcHVibGljIGxhc3RQYWdlKCk6IHZvaWQge1xuICAgIHRoaXMuUERGVmlld2VyQXBwbGljYXRpb24/LmV2ZW50QnVzLmRpc3BhdGNoKCdsYXN0cGFnZScpO1xuICB9XG59XG4iLCI8cGRmLXNoeS1idXR0b25cbiAgY3NzQ2xhc3M9XCJoaWRkZW5MYXJnZVZpZXdcIlxuICB0aXRsZT1cIkxhc3QgcGFnZVwiXG4gIHByaW1hcnlUb29sYmFySWQ9XCJwcmltYXJ5TGFzdFBhZ2VcIlxuICBsMTBuSWQ9XCJwZGZqcy1sYXN0LXBhZ2UtYnV0dG9uXCJcbiAgbDEwbkxhYmVsPVwicGRmanMtbGFzdC1wYWdlLWJ1dHRvbi1sYWJlbFwiXG4gIChjbGljayk9XCJsYXN0UGFnZSgpXCJcbiAgW2Rpc2FibGVkXT1cImRpc2FibGVMYXN0UGFnZVwiXG4gIFtvcmRlcl09XCI4MDBcIlxuICBldmVudEJ1c05hbWU9XCJsYXN0cGFnZVwiXG4gIFtjbG9zZU9uQ2xpY2tdPVwiZmFsc2VcIlxuICBpbWFnZT1cIjxzdmcgd2lkdGg9JzI0cHgnIGhlaWdodD0nMjRweCcgdmlld0JveD0nMCAwIDI0IDI0Jz48cGF0aCBmaWxsPSdjdXJyZW50Q29sb3InIGQ9J001LjU5LDcuNDFMMTAuMTgsMTJMNS41OSwxNi41OUw3LDE4TDEzLDEyTDcsNkw1LjU5LDcuNDFNMTYsNkgxOFYxOEgxNlY2WicgLz48L3N2Zz5cIlxuPlxuPC9wZGYtc2h5LWJ1dHRvbj5cbiJdfQ==

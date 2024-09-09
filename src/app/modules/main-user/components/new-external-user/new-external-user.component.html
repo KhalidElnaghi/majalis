@@ -1,0 +1,124 @@
+@if(isLoading){
+<mat-progress-bar mode="indeterminate" />
+}
+
+<div
+  class="!text-primary flex items-center justify-start mx-4 py-4"
+  mat-dialog-title
+>
+  <h1 class="text-xl">{{ dialogData.addNewInvitee | translate }}</h1>
+</div>
+
+<mat-dialog-content>
+  <form
+    (ngSubmit)="handleAddMembers(form)"
+    class="flex flex-col gap-y-2"
+    id="external-member"
+    [formGroup]="form"
+  >
+    <div class="flex justify-start flex-wrap items-center sm:gap-1">
+      <label class="mb-2 w-1/3 text-sm">
+        {{ "MAIN.LABEL.NAME" | translate }}
+      </label>
+
+      <mat-form-field appearance="fill" class="!flex-grow">
+        <input formControlName="name" type="text" matInput />
+        <!-- Required error message -->
+        @if(form.controls.name.errors?.['required']){
+        <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div class="flex justify-start flex-wrap items-center sm:gap-1">
+      <label class="mb-2 w-1/3 text-sm">
+        {{ "MAIN.LABEL.USER_NAME" | translate }}
+      </label>
+
+      <mat-form-field appearance="fill" class="!flex-grow">
+        <input formControlName="username" type="text" matInput />
+        <!-- Required error message -->
+        @if(form.controls.username.errors?.['required']){
+        <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+        } @if(form.controls.username.errors?.['pattern']){
+        <mat-error>
+          {{ "MAIN.ERROR.INVALID_USER_NAME" | translate }}
+        </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-start flex-wrap items-center sm:gap-1">
+      <label class="mb-4 w-1/3 text-sm">
+        {{ "MAIN.LABEL.MOBILE" | translate }}
+      </label>
+
+      <mat-form-field appearance="fill" class="!flex-grow">
+        <input formControlName="phone" type="tel" matInput maxlength="9" />
+        <p matSuffix class="flex items-center gap-2 px-2">
+          966+
+          <img
+            class="rounded-md"
+            width="35"
+            height="15"
+            src="./assets/images/saudi_arabia_flag.jpeg"
+            alt="Saudi arabia flag"
+          />
+        </p>
+
+        <!-- Required error message -->
+        @if(form.controls.phone.errors?.['required'] ){
+        <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+        }
+
+        <!-- Name length error message -->
+        @if(form.controls.phone.errors?.['maxlength']){
+        <mat-error>
+          {{ "MAIN.ERROR.MIN_LENGTH_10" | translate }}
+        </mat-error>
+        }
+
+        <!-- Saudi Mobile error message -->
+        @if(form.controls.phone.errors?.['pattern']){
+        <mat-error>
+          {{ "MAIN.ERROR.INVALID_PHONE_NUMBER" | translate }}
+        </mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-start flex-wrap items-center sm:gap-1">
+      <label class="mb-4 w-1/3 text-sm">
+        {{ "MAIN.LABEL.EMAIL" | translate }}
+      </label>
+
+      <mat-form-field appearance="fill" class="!flex-grow">
+        <input formControlName="email" type="text" matInput />
+        <!-- Required error message -->
+        @if(form.controls.email.errors?.['required']){
+        <mat-error>{{ "MAIN.ERROR.FIELD_REQUIRED" | translate }}</mat-error>
+        }
+
+        <!-- Email error message -->
+        @if(form.controls.email.errors?.['email']){
+        <mat-error>{{ "MAIN.ERROR.EMAIL" | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    [disabled]="form.invalid || isLoading"
+    form="external-member"
+    mat-raised-button
+    color="primary"
+    class="mx-2"
+  >
+    {{ "GLOBAL.BUTTON.ADD" | translate }}
+  </button>
+
+  <button mat-dialog-close mat-stroked-button class="!text-primary">
+    {{ "GLOBAL.BUTTON.CANCEL" | translate }}
+  </button>
+</mat-dialog-actions>

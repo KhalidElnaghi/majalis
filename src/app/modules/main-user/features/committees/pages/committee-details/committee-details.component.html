@@ -1,0 +1,31 @@
+<page-header [titles]="pageTitle">
+  <custom-breadcrumb breadcrumb [pagesRoutes]="breadcrumbData" />
+</page-header>
+
+<mat-tab-group
+  animationDuration="0ms"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+>
+  <mat-tab [label]="'MAIN.TITLE.MEETINGS' | translate">
+    <div class="mt-8">
+      @if(!meetingId()) {
+      <meetings-list />
+      } @else {
+      <meeting-details-view [value]="value()" />
+      }
+    </div>
+  </mat-tab>
+
+  <mat-tab [label]="'MAIN.TITLE.DOCUMENTS' | translate">
+    <div class="mt-4">
+      <committee-documents />
+    </div>
+  </mat-tab>
+
+  <mat-tab [label]="'MAIN.TITLE.PAST_MEETINGS_MINUTES' | translate">
+    <div class="mt-4">
+      <committee-previous-meeting-minutes/>
+    </div>
+  </mat-tab>
+</mat-tab-group>
