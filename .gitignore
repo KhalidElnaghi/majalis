@@ -5,13 +5,13 @@
 /tmp
 /out-tsc
 /bazel-out
-environments
-!environments/environment.ts
+# environments
+# !environments/environment.ts
 
 # Node
 /node_modules
 npm-debug.log
-yarn-error.log
+yarn-error.logy
 *-lock.*
 
 # IDEs and editors
